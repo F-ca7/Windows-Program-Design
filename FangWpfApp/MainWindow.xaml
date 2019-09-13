@@ -1,0 +1,27 @@
+﻿<Window x:Class="FangWpfApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FangWpfApp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+
+        <TabControl HorizontalAlignment="Left" Height="419" VerticalAlignment="Top" Width="782">
+            <TabItem Header="DLL">
+                <Grid Background="#FFE5E5E5">
+                    <Button Content="C#一键排序" HorizontalAlignment="Left" Margin="343,105,0,0" VerticalAlignment="Top" Width="75" Height="34" Click="Btn_Sort_Click"/>
+                    <Button Content="C++一键排序" HorizontalAlignment="Left" Margin="343,170,0,0" VerticalAlignment="Top" Width="75" Height="34" Click="Btn_Sort2_Click"/>
+
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="COM组件">
+                <Grid Background="#FFE5E5E5">
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>
