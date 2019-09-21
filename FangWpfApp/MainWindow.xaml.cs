@@ -13,12 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DllSharpSort;
+using DMSkin.WPF;
+
 namespace FangWpfApp
 {
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         const int ARR_SIZE = 6;
         int[] arr;

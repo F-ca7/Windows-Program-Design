@@ -1,9 +1,15 @@
 ﻿<Application x:Class="FangWpfApp.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:DMSkin="clr-namespace:DMSkin.WPF;assembly=DMSkin.WPF"
              xmlns:local="clr-namespace:FangWpfApp"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!--  DMSkin  -->
+                <ResourceDictionary Source="pack://application:,,,/DMSkin;component/DMSkin.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
