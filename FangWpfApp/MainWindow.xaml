@@ -9,15 +9,25 @@
     <Grid>
 
         <TabControl HorizontalAlignment="Left" Height="419" VerticalAlignment="Top" Width="782">
-            <TabItem Header="DLL">
-                <Grid Background="#FFE5E5E5">
-                    <Button Content="C#一键排序" HorizontalAlignment="Left" Margin="343,105,0,0" VerticalAlignment="Top" Width="75" Height="34" Click="Btn_Sort_Click"/>
-                    <Button Content="C++一键排序" HorizontalAlignment="Left" Margin="343,170,0,0" VerticalAlignment="Top" Width="75" Height="34" Click="Btn_Sort2_Click"/>
+            <TabItem Header="DLL" FontSize="15">
+                <Grid Background="#FFFFFF" >
+                    <Label Content="原数组：" HorizontalAlignment="Left" Height="28" Margin="189,50,0,0" VerticalAlignment="Top" Width="68" FontSize="15"/>
+                    <Button Content="C#冒泡排序" HorizontalAlignment="Center" Margin="0,110,0,0" VerticalAlignment="Top" Width="98" Height="34" Click="Btn_Sort_Click"/>
+                    <Button Content="生成数组" HorizontalAlignment="Left" Margin="588,50,0,0" VerticalAlignment="Top" Width="84" Height="34" Click="Btn_GenerateArr_Click" />
+                    <Button Content="C++归并排序" HorizontalAlignment="Center" Margin="0,169,0,0" VerticalAlignment="Top" Width="98" Height="34" Click="Btn_Sort2_Click"/>
+                    <Label Content="排序后：" HorizontalAlignment="Left" Height="28" Margin="189,242,0,0" VerticalAlignment="Top" Width="68" FontSize="15"/>
+                    <TextBlock HorizontalAlignment="Left" Height="23" Margin="276,55,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="307" Name="OriginArrayTxt"/>
+                    <TextBlock HorizontalAlignment="Left" Height="23" Margin="276,247,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="307" Name="ResultArrayTxt"/>
 
                 </Grid>
             </TabItem>
 
-            <TabItem Header="COM组件">
+            <TabItem Header="COM组件" FontSize="15">
+                <Grid Background="#FFE5E5E5">
+                </Grid>
+            </TabItem>
+            
+            <TabItem Header="IPC" FontSize="15">
                 <Grid Background="#FFE5E5E5">
                 </Grid>
             </TabItem>
