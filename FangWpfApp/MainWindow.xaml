@@ -91,7 +91,8 @@
                     <Grid HorizontalAlignment="Left" Height="261" Margin="184,22,0,0" VerticalAlignment="Top" Width="570">
                         <Label Content="跟踪路由目标主机：" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="12"/>
                         <Controls:DMTextBox Name="Txb_Trace_Target" Opacity="0.8" HorizontalAlignment="Left" Height="23" Margin="128,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="286"/>
-                        <Controls:DMButton Content="开始" Opacity="0.7" HorizontalAlignment="Left" Margin="470,10,0,0" VerticalAlignment="Top" Width="75" Click="Btn_Tracert"/>
+                        <Controls:DMButton Name="Btn_Start_Tracert" Content="开始" Opacity="0.7" HorizontalAlignment="Left" Margin="470,10,0,0" VerticalAlignment="Top" Width="75" Click="Btn_Tracert_Click"/>
+                        <Controls:DMTextBox Name="Txb_Trace_Result" Opacity="0.8" HorizontalAlignment="Left" Height="211" Margin="10,40,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="535"/>
 
                     </Grid>
                 </Grid>
