@@ -117,6 +117,10 @@
       <Project>{4b53ba60-e524-48a9-a49e-9be1b0b9f6f7}</Project>
       <Name>DllSharpSort</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MyCOM\MyCOM.csproj">
+      <Project>{2e7a6ed0-2098-4300-a190-129a4400bb3d}</Project>
+      <Name>MyCOM</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="img\timg.jpg" />

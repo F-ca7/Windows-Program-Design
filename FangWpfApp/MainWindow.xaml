@@ -69,31 +69,59 @@
 
             <TabItem Header="COM" FontSize="15" Width="60">
                 <Grid Background="Transparent">
-                    <Controls:DMButton Content="自定义COM" HorizontalAlignment="Left" Height="35" Margin="22,40,0,0" VerticalAlignment="Top" Width="102"/>
+                    <Controls:DMButton Content="自定义COM" HorizontalAlignment="Left" Height="35" Margin="22,40,0,0" VerticalAlignment="Top" Width="102" Click="Btn_MyCOM_Click"/>
                     <Controls:DMButton Content="Word COM" HorizontalAlignment="Left" Height="35" Margin="22,120,0,0" VerticalAlignment="Top" Width="102" Click="Btn_Show_Word" />
-                    <Controls:DMButton Content="Excel COM" HorizontalAlignment="Left" Height="35" Margin="22,200,0,0" VerticalAlignment="Top" Width="102" />
+                    <Controls:DMButton Content="Excel COM" HorizontalAlignment="Left" Height="35" Margin="22,200,0,0" VerticalAlignment="Top" Width="102" Click="Btn_Show_Excel" />
+                    <Grid  Name="Grid_MyCOM" Visibility="Hidden" HorizontalAlignment="Left" Height="304" Margin="151,19,0,0" VerticalAlignment="Top" Width="601">
+                        <Label Content="输入double类型数组(空格分隔)：" HorizontalAlignment="Left" Margin="10,19,0,0" VerticalAlignment="Top"/>
+                        <Controls:DMTextBox Name="Txb_Arr_Input" HorizontalAlignment="Left" Height="23" Margin="82,65,0,0" TextWrapping="Wrap" Text="" Hint="空格分隔" VerticalAlignment="Top" Width="418"/>
+                        <Controls:DMButton Click="Btn_Calc_Stats_Click" Content="计算统计量" Opacity="0.8" HorizontalAlignment="Left" Margin="248,104,0,0" VerticalAlignment="Top" Width="100" Height="35"/>
+                        <Label Content="平均值：" HorizontalAlignment="Left" Margin="82,158,0,0" VerticalAlignment="Top"/>
+                        <Label Content="方差：" HorizontalAlignment="Left" Margin="82,209,0,0" VerticalAlignment="Top"/>
+                        <Label Name="Lbl_Var_Result" Content="" HorizontalAlignment="Left" Margin="157,209,0,0" VerticalAlignment="Top" />
+                        <Label Name="Lbl_Mean_Result" HorizontalAlignment="Left" Margin="157,158,0,0" VerticalAlignment="Top"/>
+
+                    </Grid>
                     <Grid Visibility="Hidden" HorizontalAlignment="Left" Height="304" Margin="151,19,0,0" VerticalAlignment="Top" Width="601" Name="Grid_Word">
                         <Label Content="标题：" HorizontalAlignment="Left" Margin="26,10,0,0" VerticalAlignment="Top"/>
                         <Controls:DMTextBox Opacity="0.8" Name="Txb_Title" HorizontalAlignment="Left" Height="23" Margin="81,13,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="151"/>
                         <Controls:DMTextBox Opacity="0.8" Name="Txb_Content" HorizontalAlignment="Left" Height="154" Margin="81,57,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="460"/>
                         <Label Content="正文：" HorizontalAlignment="Left" Margin="26,53,0,0" VerticalAlignment="Top"/>
                         <Button Content="生成" HorizontalAlignment="Left" Margin="515,251,0,0" VerticalAlignment="Top" Width="75" Height="29"  Click="Btn_Word_COM_Click"/>
-
+                    </Grid>
+                    <Grid Visibility="Hidden" HorizontalAlignment="Left" Height="304" Margin="151,19,0,0" VerticalAlignment="Top" Width="601" Name="Grid_Excel">
+                        <Label Content="标题：" HorizontalAlignment="Left" Margin="26,10,0,0" VerticalAlignment="Top"/>
+                        <Label Content="正文：" HorizontalAlignment="Left" Margin="26,53,0,0" VerticalAlignment="Top"/>
+                        <Button Content="生成" HorizontalAlignment="Left" Margin="515,251,0,0" VerticalAlignment="Top" Width="75" Height="29"  Click="Btn_Word_COM_Click"/>
                     </Grid>
                 </Grid>
             </TabItem>
 
             <TabItem Header="IPC" FontSize="15" Width="60">
-                <Grid Background="Transparent">
-                    <Button Content="重定向" HorizontalAlignment="Left" Height="31" Margin="25,41,0,0" VerticalAlignment="Top" Width="96"/>
-                    <Button Content="管道" HorizontalAlignment="Left" Height="31" Margin="25,113,0,0" VerticalAlignment="Top" Width="96"/>
-                    <Button Content="信号量" HorizontalAlignment="Left" Height="31" Margin="25,186,0,0" VerticalAlignment="Top" Width="96"/>
-                    <Grid HorizontalAlignment="Left" Height="261" Margin="184,22,0,0" VerticalAlignment="Top" Width="570">
+                <Grid Background="Transparent" >
+                    <Button Click="Btn_Show_Redirect" Content="重定向" HorizontalAlignment="Left" Height="31" Margin="25,41,0,0" VerticalAlignment="Top" Width="96"/>
+                    <Button Click="Btn_Show_Pipe"  Content="管道" HorizontalAlignment="Left" Height="31" Margin="25,113,0,0" VerticalAlignment="Top" Width="96"/>
+                    <Button Click="Button_Click" Content="信号量" HorizontalAlignment="Left" Height="31" Margin="25,186,0,0" VerticalAlignment="Top" Width="96"/>
+                    <Grid Name="Grid_Redirect" Visibility="Hidden"  HorizontalAlignment="Left" Height="301" Margin="184,22,0,0" VerticalAlignment="Top" Width="570">
                         <Label Content="跟踪路由目标主机：" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="12"/>
                         <Controls:DMTextBox Name="Txb_Trace_Target" Opacity="0.8" HorizontalAlignment="Left" Height="23" Margin="128,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="286"/>
                         <Controls:DMButton Name="Btn_Start_Tracert" Content="开始" Opacity="0.7" HorizontalAlignment="Left" Margin="470,10,0,0" VerticalAlignment="Top" Width="75" Click="Btn_Tracert_Click"/>
-                        <Controls:DMTextBox Name="Txb_Trace_Result" Opacity="0.8" HorizontalAlignment="Left" Height="211" Margin="10,40,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="535"/>
+                        <Controls:DMTextBox Name="Txb_Trace_Result" Opacity="0.8" HorizontalAlignment="Left" Height="211" Margin="10,40,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="535" FontSize="12"/>
+                        <Controls:DMButton Click="Btn_Getmac_Click" Opacity="0.8" Content="获取网卡mac" HorizontalAlignment="Left" Margin="61,256,0,0" VerticalAlignment="Top" Width="111" Height="35"/>
+                        <Controls:DMButton Click="Btn_Shutdown_Click" Opacity="0.8" Content="shutdown" HorizontalAlignment="Left" Margin="390,256,0,0" VerticalAlignment="Top" Width="111" Height="35"/>
+                    </Grid>
+                    <Grid Name="Grid_Pipe" Visibility="Hidden"  HorizontalAlignment="Left" Height="261" Margin="184,22,0,0" VerticalAlignment="Top" Width="570">
+                        <Label Content="Client：" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="12"/>
+                        <Label Content="Server：" HorizontalAlignment="Left" Margin="281,10,0,0" VerticalAlignment="Top" FontSize="12"/>
+                        <GridSplitter HorizontalAlignment="Left" Height="241" Margin="273,10,0,0" VerticalAlignment="Top" Width="3"/>
+                        <Controls:DMTextBox Name="Txb_Client" HorizontalAlignment="Left" Height="107" Margin="38,40,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="206"/>
+                        <Controls:DMTextBox Name="Txb_Server" HorizontalAlignment="Left" Height="204" Margin="309,35,0,0" TextWrapping="Wrap" Text="" IsEnabled="False" VerticalAlignment="Top" Width="240"/>
+                        <Button Click="Btn_Send_Msg_Click" Opacity="0.8" Content="发送" HorizontalAlignment="Left" Margin="178,158,0,0" VerticalAlignment="Top" Width="75"/>
 
+                    </Grid>
+                    
+                    <Grid Name="Grid_Sem" Visibility="Hidden"  HorizontalAlignment="Left" Height="261" Margin="184,22,0,0" VerticalAlignment="Top" Width="570">
+                        
                     </Grid>
                 </Grid>
             </TabItem>

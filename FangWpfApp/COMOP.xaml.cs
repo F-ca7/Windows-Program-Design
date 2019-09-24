@@ -7,21 +7,70 @@ using System.Threading.Tasks;
 using System.Windows;
 
 using MsWord = Microsoft.Office.Interop.Word;
+using MyCOM;
 
 namespace FangWpfApp
 {
-    // COM组件操作
+    // COM组件操作演示
     public partial class MainWindow
     {
+        // 显示自定义COM的演示面板
+        private void Btn_MyCOM_Click(object sender, RoutedEventArgs e)
+        {
+            HideAllCOMGrids();
+            Grid_MyCOM.Visibility = Visibility.Visible;
+        }
+
+        // 显示Word的演示面板
         private void Btn_Show_Word(object sender, RoutedEventArgs e)
         {
-            HideAllGrid();
+            HideAllCOMGrids();
             Grid_Word.Visibility = Visibility.Visible;
         }
 
-        private void HideAllGrid()
+        // 显示Excel的演示面板
+        private void Btn_Show_Excel(object sender, RoutedEventArgs e)
+        {
+            HideAllCOMGrids();
+            Grid_Excel.Visibility = Visibility.Visible;
+        }
+
+        // 隐藏所有面板
+        private void HideAllCOMGrids()
         {
             Grid_Word.Visibility = Visibility.Hidden;
+            Grid_Excel.Visibility = Visibility.Hidden;
+            Grid_MyCOM.Visibility = Visibility.Hidden;
+        }
+
+        // 计算统计量
+        private void Btn_Calc_Stats_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(Txb_Arr_Input.Text))
+            {
+                MessageBox.Show("请输入数组", "Alert");
+                return;
+            }
+            string[] elements = Txb_Arr_Input.Text.Split(' ');
+            double[] arr = new double[elements.Length];
+            for(int i = 0; i < elements.Length; i++)
+            {
+                try
+                {
+                    arr[i] = double.Parse(elements[i]);
+                }
+                catch (FormatException)
+                {
+                    MessageBox.Show("请输入正确格式的浮点数", "Error");
+                    return;
+                }
+            }
+            MyStatisticsCOM myStatistics = new MyStatisticsCOM();
+            double mean = myStatistics.GetMean(arr);
+            double var = myStatistics.GetVar(arr);
+            Lbl_Mean_Result.Content = mean.ToString("0.##");
+            Lbl_Var_Result.Content = var.ToString("0.##");
+
         }
 
         private void Btn_Word_COM_Click(object sender, RoutedEventArgs e)

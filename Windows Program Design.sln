@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DllSharpSort", "DllSort\Dll
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DllCppSort", "DllCppSort\DllCppSort.vcxproj", "{56D83058-D377-4478-A1BD-AB8AAE3E898B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCOM", "MyCOM\MyCOM.csproj", "{2E7A6ED0-2098-4300-A190-129A4400BB3D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,18 @@ Global
 		{56D83058-D377-4478-A1BD-AB8AAE3E898B}.Release|x64.Build.0 = Release|x64
 		{56D83058-D377-4478-A1BD-AB8AAE3E898B}.Release|x86.ActiveCfg = Release|Win32
 		{56D83058-D377-4478-A1BD-AB8AAE3E898B}.Release|x86.Build.0 = Release|Win32
+		{2E7A6ED0-2098-4300-A190-129A4400BB3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E7A6ED0-2098-4300-A190-129A4400BB3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E7A6ED0-2098-4300-A190-129A4400BB3D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2E7A6ED0-2098-4300-A190-129A4400BB3D}.Debug|x64.Build.0 = Debug|Any CPU
+		{2E7A6ED0-2098-4300-A190-129A4400BB3D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2E7A6ED0-2098-4300-A190-129A4400BB3D}.Debug|x86.Build.0 = Debug|Any CPU
+		{2E7A6ED0-2098-4300-A190-129A4400BB3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E7A6ED0-2098-4300-A190-129A4400BB3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E7A6ED0-2098-4300-A190-129A4400BB3D}.Release|x64.ActiveCfg = Release|Any CPU
+		{2E7A6ED0-2098-4300-A190-129A4400BB3D}.Release|x64.Build.0 = Release|Any CPU
+		{2E7A6ED0-2098-4300-A190-129A4400BB3D}.Release|x86.ActiveCfg = Release|Any CPU
+		{2E7A6ED0-2098-4300-A190-129A4400BB3D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
