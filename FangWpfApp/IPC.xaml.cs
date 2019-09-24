@@ -17,19 +17,137 @@ namespace FangWpfApp
     {
         // 管道命名
         const string PIPE_NAME = "CSPipeFang";
-
         // 命名管道
         NamedPipeClientStream pipeClient = null;
         NamedPipeServerStream pipeServer = null;
         StreamWriter sw = null;
         StreamReader sr = null;
+        // 缓冲区大小
+        const int BUFF_SIZE = 6;
+        // 总生产数量
+        const int TOTAL_PRODUCT = 20;
+        // 信号量
+        Semaphore empty;
+        Semaphore full;
+        Mutex mutex = new Mutex();
+        // 已经生产的数量
+        int producedCnt = 0;    
 
-        // 显示重定向的演示面板
-        private void Btn_Show_Redirect(object sender, RoutedEventArgs e)
+        // 隐藏所有面板
+        private void HideAllIPCGrids()
+        {
+            Grid_Redirect.Visibility = Visibility.Hidden;
+            Grid_Pipe.Visibility = Visibility.Hidden;
+            Grid_Sem.Visibility = Visibility.Hidden;
+            pipeClient = null;
+            pipeServer = null;
+            if (sw != null)
+            {
+                sw.Close();
+                sw = null;
+            }
+            if (sr != null)
+            {
+                sr.Close();
+                sr = null;
+            }
+        }
+
+        #region 信号量同步
+        // 显示信号量同步的演示面板
+        private void Btn_Show_Sem(object sender, RoutedEventArgs e)
         {
             HideAllIPCGrids();
-            Grid_Redirect.Visibility = Visibility.Visible;
+            Grid_Sem.Visibility = Visibility.Visible;
         }
+
+        // 开始模拟生产者消费者同步
+        private void Btn_Start_Sem_Click(object sender, RoutedEventArgs e)
+        {
+            int producerCnt, consumerCnt;
+            try
+            {
+                Txb_Sem_Result.AppendText(string.Format("缓冲区大小为{0}, 总生产个数为{1}\n", BUFF_SIZE, TOTAL_PRODUCT));
+                producerCnt = int.Parse(Txb_Producer_Cnt.Text);
+                consumerCnt = int.Parse(Txb_Consumer_Cnt.Text);
+                empty = new Semaphore(BUFF_SIZE, BUFF_SIZE);
+                full = new Semaphore(0, BUFF_SIZE);
+                
+                for(int i = 0; i < producerCnt; i++)
+                {
+                    Thread thread = new Thread(new ParameterizedThreadStart(Produce));
+                    thread.Name = "生产者" + i;
+                    thread.Start(thread.Name);
+                }
+                for (int i = 0; i < consumerCnt; i++)
+                {
+                    Thread thread = new Thread(new ParameterizedThreadStart(Consume));
+                    thread.Name = "消费者" + i;
+                    thread.Start(thread.Name);
+                }
+
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("请输入正整数！");
+            }
+        }
+        // 生产者生产
+        private void Produce(object obj)
+        {
+            while (true)
+            {
+                mutex.WaitOne();
+                if (producedCnt >= TOTAL_PRODUCT)
+                {
+                    AppendSemResult(string.Format("---------------\n达到生产目标{0}。{1}结束\n", TOTAL_PRODUCT, obj.ToString()));
+                    mutex.ReleaseMutex();
+                    return;
+                }
+                // 未生产完，继续
+                AppendSemResult(string.Format("---------------\n目前已经生产{0}个产品\n", producedCnt));
+                producedCnt++;
+                mutex.ReleaseMutex();
+                empty.WaitOne();
+                Thread.Sleep(1000);
+                AppendSemResult(string.Format("---------------\n{0}生产完成\n", obj.ToString()));
+                full.Release();
+            }
+        }
+        // 消费者消费
+        private void Consume(object obj)
+        {
+            while (true)
+            {
+                mutex.WaitOne();
+                if (producedCnt >= TOTAL_PRODUCT)
+                {
+                    AppendSemResult(string.Format("---------------\n达到生产目标{0}。{1}结束\n", TOTAL_PRODUCT, obj.ToString()));
+                    mutex.ReleaseMutex();
+                    return;
+                }
+                mutex.ReleaseMutex();
+                full.WaitOne();
+                Thread.Sleep(1000);
+                AppendSemResult(string.Format("---------------\n{0}消费完成\n", obj.ToString()));
+                empty.Release();
+            }
+
+        }
+
+        // 异步更新结果
+        private void AppendSemResult(string data)
+        {
+            Txb_Sem_Result.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Txb_Sem_Result.AppendText(data + "\n");
+                Txb_Sem_Result.ScrollToEnd();
+            }));         
+        }
+
+        #endregion
+
+        #region 命名管道
 
         // 显示管道的演示面板
         private void Btn_Show_Pipe(object sender, RoutedEventArgs e)
@@ -37,9 +155,9 @@ namespace FangWpfApp
             HideAllIPCGrids();
             Grid_Pipe.Visibility = Visibility.Visible;
             // 初始化管道
-            pipeServer = new NamedPipeServerStream(PIPE_NAME, PipeDirection.InOut, 1, 
+            pipeServer = new NamedPipeServerStream(PIPE_NAME, PipeDirection.InOut, 1,
                 PipeTransmissionMode.Message, PipeOptions.Asynchronous);
-            pipeClient = new NamedPipeClientStream("localhost", PIPE_NAME, PipeDirection.InOut, 
+            pipeClient = new NamedPipeClientStream("localhost", PIPE_NAME, PipeDirection.InOut,
                 PipeOptions.Asynchronous, TokenImpersonationLevel.None);
             ConnectPipe();
             WaitForMessage();
@@ -101,19 +219,18 @@ namespace FangWpfApp
                 MessageBox.Show("未建立连接。");
             }
         }
+        #endregion
 
-        private void HideAllIPCGrids()
+        #region 重定向
+
+        // 显示重定向的演示面板
+        private void Btn_Show_Redirect(object sender, RoutedEventArgs e)
         {
-            Grid_Redirect.Visibility = Visibility.Hidden;
-            Grid_Pipe.Visibility = Visibility.Hidden;
-            pipeClient = null;
-            pipeServer = null;
-            if (sw != null)
-            {
-                sw.Close();
-            }
+            HideAllIPCGrids();
+            Grid_Redirect.Visibility = Visibility.Visible;
         }
 
+        // tracert命令
         private void Btn_Tracert_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(Txb_Trace_Target.Text))
@@ -121,26 +238,23 @@ namespace FangWpfApp
                 MessageBox.Show("请输入目标地址", "提示");
                 return;
             }
-            // tracert命令
             string strCmd = "tracert -h 5 " + Txb_Trace_Target.Text;
             RedirectCMD(strCmd);          
         }
 
-
+        // getmac命令
         private void Btn_Getmac_Click(object sender, RoutedEventArgs e)
         {
-            // getmac命令
             string strCmd = "getmac";
             RedirectCMD(strCmd);
         }
 
+        // shutdown命令
         private void Btn_Shutdown_Click(object sender, RoutedEventArgs e)
         {
-            // shutdown命令
             string strCmd = "shutdown";
             RedirectCMD(strCmd);
         }
-
 
         // 调用CMD命令并重定向
         private void RedirectCMD(string command)
@@ -149,7 +263,6 @@ namespace FangWpfApp
             process.StartInfo.FileName = "cmd.exe";
             // 是否使用外壳程序   
             process.StartInfo.UseShellExecute = false;
-            // 是否在新窗口中启动该进程的值   
             process.StartInfo.CreateNoWindow = true;
             // 重定向输入输出流  
             process.StartInfo.RedirectStandardInput = true;
@@ -175,12 +288,11 @@ namespace FangWpfApp
             }
         }
 
-
         // 异步更新结果
         private void AppendResult(string data)
         {
              Txb_Trace_Result.Dispatcher.BeginInvoke(new Action(() => Txb_Trace_Result.AppendText(data+"\n")));
         }
-
+        #endregion
     }
 }

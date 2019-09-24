@@ -101,7 +101,7 @@
                 <Grid Background="Transparent" >
                     <Button Click="Btn_Show_Redirect" Content="重定向" HorizontalAlignment="Left" Height="31" Margin="25,41,0,0" VerticalAlignment="Top" Width="96"/>
                     <Button Click="Btn_Show_Pipe"  Content="管道" HorizontalAlignment="Left" Height="31" Margin="25,113,0,0" VerticalAlignment="Top" Width="96"/>
-                    <Button Click="Button_Click" Content="信号量" HorizontalAlignment="Left" Height="31" Margin="25,186,0,0" VerticalAlignment="Top" Width="96"/>
+                    <Button Click="Btn_Show_Sem" Content="信号量" HorizontalAlignment="Left" Height="31" Margin="25,186,0,0" VerticalAlignment="Top" Width="96"/>
                     <Grid Name="Grid_Redirect" Visibility="Hidden"  HorizontalAlignment="Left" Height="301" Margin="184,22,0,0" VerticalAlignment="Top" Width="570">
                         <Label Content="跟踪路由目标主机：" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="12"/>
                         <Controls:DMTextBox Name="Txb_Trace_Target" Opacity="0.8" HorizontalAlignment="Left" Height="23" Margin="128,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="286"/>
@@ -115,13 +115,19 @@
                         <Label Content="Server：" HorizontalAlignment="Left" Margin="281,10,0,0" VerticalAlignment="Top" FontSize="12"/>
                         <GridSplitter HorizontalAlignment="Left" Height="241" Margin="273,10,0,0" VerticalAlignment="Top" Width="3"/>
                         <Controls:DMTextBox Name="Txb_Client" HorizontalAlignment="Left" Height="107" Margin="38,40,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="206"/>
-                        <Controls:DMTextBox Name="Txb_Server" HorizontalAlignment="Left" Height="204" Margin="309,35,0,0" TextWrapping="Wrap" Text="" IsEnabled="False" VerticalAlignment="Top" Width="240"/>
+                        <Controls:DMTextBox Name="Txb_Server" HorizontalAlignment="Left" Height="204" Margin="309,35,0,0" TextWrapping="Wrap" Text="" IsReadOnly="True" VerticalAlignment="Top" Width="240"/>
                         <Button Click="Btn_Send_Msg_Click" Opacity="0.8" Content="发送" HorizontalAlignment="Left" Margin="178,158,0,0" VerticalAlignment="Top" Width="75"/>
 
                     </Grid>
-                    
-                    <Grid Name="Grid_Sem" Visibility="Hidden"  HorizontalAlignment="Left" Height="261" Margin="184,22,0,0" VerticalAlignment="Top" Width="570">
-                        
+
+                    <Grid Name="Grid_Sem" Visibility="Hidden"   HorizontalAlignment="Left" Height="261" Margin="184,22,0,0" VerticalAlignment="Top" Width="570">
+                        <Label Content="生产者数：" HorizontalAlignment="Left" Margin="26,10,0,0" VerticalAlignment="Top"/>
+                        <Label Content="消费者数：" HorizontalAlignment="Left" Margin="222,10,0,0" VerticalAlignment="Top"/>
+                        <Controls:DMTextBox Name="Txb_Producer_Cnt" HorizontalAlignment="Left" Height="23" Margin="106,13,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="61"/>
+                        <Controls:DMTextBox Name="Txb_Consumer_Cnt" HorizontalAlignment="Left" Height="23" Margin="307,13,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="61"/>
+                        <Controls:DMTextBox Name="Txb_Sem_Result" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="207" Margin="26,54,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="518"/>
+                        <Button Click="Btn_Start_Sem_Click" Content="开始模拟" Opacity="0.8" HorizontalAlignment="Left" Margin="445,11,0,0" VerticalAlignment="Top" Width="99" Height="26"/>
+
                     </Grid>
                 </Grid>
             </TabItem>
