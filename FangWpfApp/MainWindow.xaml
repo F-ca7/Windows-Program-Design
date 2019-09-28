@@ -9,7 +9,7 @@
         xmlns:Controls="clr-namespace:DMSkin.WPF.Controls;assembly=DMSkin.WPF" 
         x:Class="FangWpfApp.MainWindow"
         mc:Ignorable="d"
-        Title="Windows程序设计" Height="420" Width="800"
+        Title="Windows程序设计" Height="420" Width="818"
         MinWidth="380"
         MinHeight="300"
         WindowStartupLocation="CenterScreen"
@@ -28,7 +28,7 @@
                 <GradientStop Color="#8fd3f4" Offset="0.8"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <TabControl Background="Transparent"  HorizontalAlignment="Left" Height="376" VerticalAlignment="Top" Margin="0,31,0,-16" Width="782" BorderThickness="0">
+        <TabControl Background="Transparent"  HorizontalAlignment="Left" Height="376" VerticalAlignment="Top" Margin="0,31,0,-16" Width="800" BorderThickness="0">
             <TabControl.Resources>
                 <Style TargetType="TabItem">
                     <Setter Property="Template">
@@ -82,12 +82,26 @@
                         <Label Name="Lbl_Mean_Result" HorizontalAlignment="Left" Margin="157,158,0,0" VerticalAlignment="Top"/>
 
                     </Grid>
-                    <Grid Visibility="Hidden" HorizontalAlignment="Left" Height="304" Margin="151,19,0,0" VerticalAlignment="Top" Width="601" Name="Grid_Word">
+                    <Grid Visibility="Hidden" HorizontalAlignment="Left" Height="304" Margin="151,19,0,0" VerticalAlignment="Top" Width="635" Name="Grid_Word">
                         <Label Content="标题：" HorizontalAlignment="Left" Margin="26,10,0,0" VerticalAlignment="Top"/>
-                        <Controls:DMTextBox Opacity="0.8" Name="Txb_Title" HorizontalAlignment="Left" Height="23" Margin="81,13,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="151"/>
-                        <Controls:DMTextBox Opacity="0.8" Name="Txb_Content" HorizontalAlignment="Left" Height="154" Margin="81,57,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="460"/>
-                        <Label Content="正文：" HorizontalAlignment="Left" Margin="26,53,0,0" VerticalAlignment="Top"/>
-                        <Button Content="生成" HorizontalAlignment="Left" Margin="515,251,0,0" VerticalAlignment="Top" Width="75" Height="29"  Click="Btn_Word_COM_Click"/>
+                        <Controls:DMTextBox Opacity="0.8" Name="Txb_Title" HorizontalAlignment="Left" Height="23" Margin="81,13,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="163"/>
+                        <Controls:DMTextBox Opacity="0.8" Name="Txb_Content" HorizontalAlignment="Left" Height="154" Margin="81,57,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="163"/>
+                        <Label Content="章节：" HorizontalAlignment="Left" Margin="26,53,0,0" VerticalAlignment="Top"/>
+                        <Button Content="生成" HorizontalAlignment="Left" Margin="499,236,0,0" VerticalAlignment="Top" Width="111" Height="39"  Click="Btn_Word_COM_Click"/>
+                        <Label Content="参考文献：" HorizontalAlignment="Left" Margin="249,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.364,0.759"/>
+                        <Controls:DMTextBox Opacity="0.8" x:Name="Txb_Reference" HorizontalAlignment="Left" Height="23" Margin="329,13,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="227"/>
+                        <ListBox Name="Lb_ReferenceList" HorizontalAlignment="Left" Height="154" Margin="329,57,0,0" VerticalAlignment="Top" Width="281">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <TextBlock Text="{Binding Path=Name}" FontSize="15"></TextBlock>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <Controls:DMButton Click="Btn_Add_Ref" Opacity="0.8"  Content="添加" HorizontalAlignment="Left" Margin="564,9,0,0" VerticalAlignment="Top" Width="46" Height="30"/>
+                        <Label Content="页眉：" HorizontalAlignment="Left" Margin="26,238,0,0" VerticalAlignment="Top"/>
+                        <Controls:DMTextBox Opacity="0.8" x:Name="Txb_Header" HorizontalAlignment="Left" Height="23" Margin="81,242,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="158"/>
                     </Grid>
                     <Grid Visibility="Hidden" HorizontalAlignment="Left" Height="304" Margin="151,19,0,0" VerticalAlignment="Top" Width="601" Name="Grid_Excel">
                         <Label Content="标题：" HorizontalAlignment="Left" Margin="26,10,0,0" VerticalAlignment="Top"/>
@@ -143,7 +157,29 @@
                 </Grid>
             </TabItem>
             <TabItem Header="DB" FontSize="15" Width="60">
-                <Grid Background="Transparent">
+                <Grid Background="Transparent" Margin="0,0,-9,0">
+                    <Controls:DMButton  Content="Excel" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" Width="100"  Height="45"/>
+                    <Controls:DMButton  Click="Btn_Mysql_Click" Content="Mysql" HorizontalAlignment="Left" Margin="10,196,0,0" VerticalAlignment="Top" Width="100"  Height="45"/>
+                    <Grid Name="Grid_Mysql" HorizontalAlignment="Left" Height="315" Margin="127,10,0,0" VerticalAlignment="Top" Width="678" >
+                        <Label Content="用户名：" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                        <Controls:DMTextBox Name="Txb_Username" HorizontalAlignment="Left" Height="26" Margin="75,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="109" TabIndex="1"/>
+                        <Label Content="密码：" HorizontalAlignment="Left" Margin="199,10,0,0" VerticalAlignment="Top"/>
+                        <Controls:DMButton Click="Btn_Connect_Mysql_Click" Content="连接" Opacity="0.8" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="591,10,-1,0" Height="26"/>
+                        <PasswordBox Name="Txb_Pwd" HorizontalAlignment="Left" Margin="243,10,0,0" VerticalAlignment="Top" Width="120" Height="26" TabIndex="2"/>
+                        <DataGrid Name="Dg_table" HorizontalAlignment="Left" Height="261" Margin="125,44,0,0" VerticalAlignment="Top" Width="465"/>
+                        <ListView MouseDoubleClick="Lv_Table_Name_MouseDoubleClick" Name="Lv_Table_Name" HorizontalAlignment="Left" Height="261" Margin="2,44,0,0" VerticalAlignment="Top" Width="123">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="数据表名" DisplayMemberBinding="{Binding Name}" Width="120"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Label Content="数据库名：" HorizontalAlignment="Left" Margin="373,8,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.229,0.483"/>
+                        <Controls:DMTextBox x:Name="Txb_DBName" HorizontalAlignment="Left" Margin="455,10,0,0" VerticalAlignment="Top" Width="120" Height="26" TabIndex="3"/>
+                        <Controls:DMButton Click="Btn_Prev_Page_Click" Opacity="0.8" Content="《" HorizontalAlignment="Left" Margin="599,280,0,0" VerticalAlignment="Top" Width="25" />
+                        <Controls:DMButton Click="Btn_Next_Page_Click" Opacity="0.8" Content="》" HorizontalAlignment="Left" Margin="633,280,0,0" VerticalAlignment="Top" Width="25" />
+                        <Controls:DMButton Opacity="0.8" Content="新建" HorizontalAlignment="Left" Margin="595,81,0,0" VerticalAlignment="Top" Width="73" Height="31"/>
+                    </Grid>
 
                 </Grid>
             </TabItem>
