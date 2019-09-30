@@ -103,10 +103,12 @@
                         <Label Content="页眉：" HorizontalAlignment="Left" Margin="26,238,0,0" VerticalAlignment="Top"/>
                         <Controls:DMTextBox Opacity="0.8" x:Name="Txb_Header" HorizontalAlignment="Left" Height="23" Margin="81,242,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="158"/>
                     </Grid>
-                    <Grid Visibility="Hidden" HorizontalAlignment="Left" Height="304" Margin="151,19,0,0" VerticalAlignment="Top" Width="601" Name="Grid_Excel">
-                        <Label Content="标题：" HorizontalAlignment="Left" Margin="26,10,0,0" VerticalAlignment="Top"/>
-                        <Label Content="正文：" HorizontalAlignment="Left" Margin="26,53,0,0" VerticalAlignment="Top"/>
-                        <Button Content="生成" HorizontalAlignment="Left" Margin="515,251,0,0" VerticalAlignment="Top" Width="75" Height="29"  Click="Btn_Word_COM_Click"/>
+                    <Grid HorizontalAlignment="Left" Height="304" Margin="151,19,0,0" VerticalAlignment="Top" Width="601" Name="Grid_Excel">
+
+                        <Button Click="Btn_Load_Excel_Click" Content="载入表格" Opacity="0.8"  HorizontalAlignment="Left" Margin="39,265,0,0" VerticalAlignment="Top" Width="94" Height="29" />
+                        <Button Click="Btn_Add_Chart_Click"  Content="添加图表" Opacity="0.8"  HorizontalAlignment="Left" Margin="255,265,0,0" VerticalAlignment="Top" Width="94" Height="29" />
+                        <Button Click="Btn_Save_Excel_Click" Content="保  存" Opacity="0.8"  HorizontalAlignment="Left" Margin="479,265,0,0" VerticalAlignment="Top" Width="94" Height="29" />
+                        <DataGrid Name="Dg_Excel" HorizontalAlignment="Left" Height="250" Margin="10,10,0,0" VerticalAlignment="Top" Width="581"/>
                     </Grid>
                 </Grid>
             </TabItem>

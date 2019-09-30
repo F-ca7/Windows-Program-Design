@@ -7,12 +7,16 @@ using System.Threading.Tasks;
 using System.Windows;
 
 using MsWord = Microsoft.Office.Interop.Word;
+using MsExcel= Microsoft.Office.Interop.Excel;
 using MyCOM;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Core;
 using System.Threading;
+using Microsoft.Win32;
+using System.Reflection;
+using Microsoft.Office.Interop.Excel;
 
 namespace FangWpfApp
 {
@@ -77,7 +81,7 @@ namespace FangWpfApp
             doc.Activate();
 
             int curSectionNum = 1;
-            Range curRange;
+            MsWord.Range curRange;
 
             wordApp.Options.Overtype = false;   // 改写模式
             Selection curSelection = wordApp.Selection;
@@ -174,6 +178,11 @@ namespace FangWpfApp
     // COM组件操作演示
     public partial class MainWindow
     {
+        MsExcel.Application app;
+        MsExcel.Workbook wb;
+
+        string excelPath;
+
         // 参考文献列表
         private ObservableCollection<Reference> referenceList = new ObservableCollection<Reference>();
 
@@ -371,6 +380,147 @@ namespace FangWpfApp
             referenceList.Add(new Reference(refName));
             Txb_Reference.Text = "";
         }
-        # endregion wordCOM
+        #endregion wordCOM
+
+        # region ExcelCOM
+        // 加载excel表格
+        private void Btn_Load_Excel_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new OpenFileDialog()
+            {
+                Title = "载入Excel表格",
+                CheckPathExists = true,
+                CheckFileExists = true,
+                Filter = "Excel files (*.xlsx)|*.xlsx",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyComputer)
+            };
+            if (dlg.ShowDialog() == true)
+            {
+                excelPath = dlg.FileName;
+                ShowExcelInDatagrid(dlg.FileName);
+
+            }
+        }
+
+        // 在datagrid显示表格
+        private void ShowExcelInDatagrid(string filepath)
+        {
+            System.Data.DataTable dt = new System.Data.DataTable();
+            try
+            {
+                object oMissiong = System.Reflection.Missing.Value;
+                app = new MsExcel.Application();
+                wb = app.Workbooks.Open(filepath, oMissiong, oMissiong, oMissiong, oMissiong, oMissiong, oMissiong,
+                 oMissiong, oMissiong, oMissiong, oMissiong, oMissiong, oMissiong, oMissiong, oMissiong);
+                // 取得第一个工作薄
+                MsExcel.Worksheet ws = (MsExcel.Worksheet)app.Worksheets.get_Item(1);
+                int rows = ws.UsedRange.Rows.Count;
+                int columns = ws.UsedRange.Columns.Count;
+                for (int i = 1; i <= rows; i++)
+                {
+                    System.Data.DataRow dr = dt.NewRow();
+                    for (int j = 1; j <= columns; j++)
+                    {
+                        MsExcel.Range range = ws.Range[app.Cells[i, j], app.Cells[i, j]];
+                        range.Select();
+                        //读取列头
+                        if (i == 1)                                 
+                        {
+                            string colName = app.ActiveCell.Text.ToString();
+                            //是否存在重复列名
+                            if (dt.Columns.Contains(colName))                    
+                            {
+                                dt.Columns.Add(colName + j);
+                            }
+                            else { dt.Columns.Add(colName); }
+                        }
+                        dr[j - 1] = app.ActiveCell.Text.ToString();
+                    }
+                    if (i != 1)
+                    {
+                        dt.Rows.Add(dr);
+                    }
+
+                }
+                Dg_Excel.ItemsSource = dt.DefaultView;
+                ws = null;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("打开Excel失败。请检查是否文件被占用");
+            }
+        }
+
+        // 向Excel添加图表
+        private void Btn_Add_Chart_Click(object sender, RoutedEventArgs e)
+        {
+            if (app == null)
+            {
+                MessageBox.Show("请先载入表格");
+                return;
+            }
+            
+            wb.Charts.Add(Type.Missing, Type.Missing, 1, Type.Missing);
+            Worksheet ws = (Worksheet)app.Worksheets.get_Item(1);
+            MsExcel.Range chartRange = ws.Range["E1:F57"];
+            wb.ActiveChart.ChartType = MsExcel.XlChartType.xlLineMarkers;
+            wb.ActiveChart.SetSourceData(chartRange, MsExcel.XlRowCol.xlColumns);
+            wb.ActiveChart.Location(XlChartLocation.xlLocationAsObject, ws.Name);
+            // 设置图表大小
+            wb.ActiveChart.ChartArea.Width = 600;
+            wb.ActiveChart.ChartArea.Height = 300;
+
+            MessageBox.Show("添加图表成功");
+        }
+
+
+        // 保存Excel
+        private void Btn_Save_Excel_Click(object sender, RoutedEventArgs e)
+        {
+            if (app == null)
+            {
+                MessageBox.Show("请先载入表格");
+                return;
+            }
+            SetExcelBorders(3);
+            int suffix = excelPath.LastIndexOf(".xlsx");
+            // Console.WriteLine("name={0}, index={1}", excelPath, suffix);
+            object filename = excelPath.Substring(0, suffix) + "_new.xlsx";
+            wb.SaveAs(filename);
+            wb.Close(false, Missing.Value, Missing.Value);
+            MessageBox.Show("保存成功");
+            Dg_Excel.ItemsSource = null;
+            // 释放COM对象  
+            app.Quit();
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(app);
+            app = null;
+            wb = null;
+            GC.Collect();
+        }
+
+        // 设置边框
+        /// <param name="weight">宽度</param>
+        private void SetExcelBorders(int weight)
+        {
+            if (app == null)
+            {
+                return;
+            }
+            // 取得第一个工作薄
+            Worksheet ws = (MsExcel.Worksheet)app.Worksheets.get_Item(1);
+            int rows = ws.UsedRange.Rows.Count;
+            int columns = ws.UsedRange.Columns.Count;
+            string rangeStr = string.Format("A1:{0}{1}", 
+                (char)('A'+ columns-1), rows);
+            // Console.WriteLine(rangeStr);
+            MsExcel.Range range = ws.Range[rangeStr];
+            range.Borders[MsExcel.XlBordersIndex.xlInsideHorizontal].Weight = weight;
+            range.Borders[MsExcel.XlBordersIndex.xlInsideVertical].Weight = weight;
+            range.Borders[MsExcel.XlBordersIndex.xlEdgeRight].Weight = weight;
+            range.Borders[MsExcel.XlBordersIndex.xlEdgeBottom].Weight = weight;
+        }
+
+
+        #endregion
     }
 }
