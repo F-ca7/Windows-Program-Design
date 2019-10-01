@@ -109,6 +109,7 @@
                         <Button Click="Btn_Add_Chart_Click"  Content="添加图表" Opacity="0.8"  HorizontalAlignment="Left" Margin="255,265,0,0" VerticalAlignment="Top" Width="94" Height="29" />
                         <Button Click="Btn_Save_Excel_Click" Content="保  存" Opacity="0.8"  HorizontalAlignment="Left" Margin="479,265,0,0" VerticalAlignment="Top" Width="94" Height="29" />
                         <DataGrid Name="Dg_Excel" HorizontalAlignment="Left" Height="250" Margin="10,10,0,0" VerticalAlignment="Top" Width="581"/>
+                        <local:MyProBar x:Name="Pb_Loading" Visibility="Hidden" HorizontalAlignment="Left" Height="98" Margin="242,95,0,0" VerticalAlignment="Top" Width="107"/>
                     </Grid>
                 </Grid>
             </TabItem>
@@ -153,11 +154,7 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="EVT" FontSize="15" Width="60">
-                <Grid Background="Transparent">
 
-                </Grid>
-            </TabItem>
             <TabItem Header="DB" FontSize="15" Width="60">
                 <Grid Background="Transparent" Margin="0,0,-9,0">
                     <Controls:DMButton  Content="Excel" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" Width="100"  Height="45"/>

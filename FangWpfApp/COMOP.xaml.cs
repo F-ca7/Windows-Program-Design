@@ -383,8 +383,8 @@ namespace FangWpfApp
         #endregion wordCOM
 
         # region ExcelCOM
-        // 加载excel表格
-        private void Btn_Load_Excel_Click(object sender, RoutedEventArgs e)
+        // 加载Excel表格
+        private async void Btn_Load_Excel_Click(object sender, RoutedEventArgs e)
         {
             var dlg = new OpenFileDialog()
             {
@@ -396,10 +396,20 @@ namespace FangWpfApp
             };
             if (dlg.ShowDialog() == true)
             {
-                excelPath = dlg.FileName;
-                ShowExcelInDatagrid(dlg.FileName);
-
+                excelPath = dlg.FileName;              
+                await LoadExcel(dlg.FileName);
             }
+        }
+
+        // 异步加载Excel
+        private async System.Threading.Tasks.Task LoadExcel(string filepath)
+        {
+            await System.Threading.Tasks.Task.Run(() =>
+            {
+                Pb_Loading.Dispatcher.BeginInvoke(new System.Action(() => Pb_Loading.Visibility = Visibility.Visible));
+                ShowExcelInDatagrid(filepath);
+                Pb_Loading.Dispatcher.BeginInvoke(new System.Action(() => Pb_Loading.Visibility = Visibility.Hidden));
+            });
         }
 
         // 在datagrid显示表格
@@ -408,12 +418,12 @@ namespace FangWpfApp
             System.Data.DataTable dt = new System.Data.DataTable();
             try
             {
-                object oMissiong = System.Reflection.Missing.Value;
+                object oMissing = System.Reflection.Missing.Value;
                 app = new MsExcel.Application();
-                wb = app.Workbooks.Open(filepath, oMissiong, oMissiong, oMissiong, oMissiong, oMissiong, oMissiong,
-                 oMissiong, oMissiong, oMissiong, oMissiong, oMissiong, oMissiong, oMissiong, oMissiong);
+                wb = app.Workbooks.Open(filepath, oMissing, oMissing, oMissing, oMissing, oMissing, oMissing,
+                 oMissing, oMissing, oMissing, oMissing, oMissing, oMissing, oMissing, oMissing);
                 // 取得第一个工作薄
-                MsExcel.Worksheet ws = (MsExcel.Worksheet)app.Worksheets.get_Item(1);
+                Worksheet ws = (Worksheet)app.Worksheets.get_Item(1);
                 int rows = ws.UsedRange.Rows.Count;
                 int columns = ws.UsedRange.Columns.Count;
                 for (int i = 1; i <= rows; i++)
@@ -442,16 +452,16 @@ namespace FangWpfApp
                     }
 
                 }
-                Dg_Excel.ItemsSource = dt.DefaultView;
+                Dg_Excel.Dispatcher.BeginInvoke(new System.Action(() => Dg_Excel.ItemsSource = dt.DefaultView));
                 ws = null;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                MessageBox.Show("打开Excel失败。请检查是否文件被占用");
+                MessageBox.Show("打开Excel失败。请检查是否文件被占用 "+e.ToString());
             }
         }
 
-        // 向Excel添加图表
+        // 点击向Excel添加图表
         private void Btn_Add_Chart_Click(object sender, RoutedEventArgs e)
         {
             if (app == null)
@@ -459,20 +469,58 @@ namespace FangWpfApp
                 MessageBox.Show("请先载入表格");
                 return;
             }
-            
+            DlgExcelColRange dlgExcelColRange = new DlgExcelColRange();
+            dlgExcelColRange.sendMessage += AddChartHandler;
+            dlgExcelColRange.ShowDialog();
+            //if(dlgExcelColRange.DialogResult == false)
+            //{
+            //    return;
+            //}
+        }
+
+        // Excel列范围输入窗口的回调
+        private void AddChartHandler(int startCol, int EndCol)
+        {
+            try
+            {
+                AddChartToExcel(startCol, EndCol);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                MessageBox.Show("输入列不合法");
+                return;
+            }
+
+            MessageBox.Show("添加图表成功");
+        }
+
+        // 向Excel添加图表
+        /// <param name="startCol">起始列</param>
+        /// <param name="EndCol">结束列</param>
+        private void AddChartToExcel(int startCol, int EndCol)
+        {
             wb.Charts.Add(Type.Missing, Type.Missing, 1, Type.Missing);
             Worksheet ws = (Worksheet)app.Worksheets.get_Item(1);
-            MsExcel.Range chartRange = ws.Range["E1:F57"];
+            int rows = ws.UsedRange.Rows.Count;
+            int cols = ws.UsedRange.Columns.Count;
+            // 注意Excel下标从1开始
+            // 不是0
+            if(startCol>EndCol || EndCol > cols)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+            string rangeStr = string.Format("{0}1:{1}{2}",
+                (char)('A'+ startCol - 1), (char)('A'+EndCol-1), rows);
+            MsExcel.Range chartRange = ws.Range[rangeStr];
+
+
             wb.ActiveChart.ChartType = MsExcel.XlChartType.xlLineMarkers;
             wb.ActiveChart.SetSourceData(chartRange, MsExcel.XlRowCol.xlColumns);
             wb.ActiveChart.Location(XlChartLocation.xlLocationAsObject, ws.Name);
             // 设置图表大小
             wb.ActiveChart.ChartArea.Width = 600;
             wb.ActiveChart.ChartArea.Height = 300;
-
-            MessageBox.Show("添加图表成功");
         }
-
 
         // 保存Excel
         private void Btn_Save_Excel_Click(object sender, RoutedEventArgs e)
