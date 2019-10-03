@@ -103,7 +103,8 @@
                         <Label Content="页眉：" HorizontalAlignment="Left" Margin="26,238,0,0" VerticalAlignment="Top"/>
                         <Controls:DMTextBox Opacity="0.8" x:Name="Txb_Header" HorizontalAlignment="Left" Height="23" Margin="81,242,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="158"/>
                     </Grid>
-                    <Grid HorizontalAlignment="Left" Height="304" Margin="151,19,0,0" VerticalAlignment="Top" Width="601" Name="Grid_Excel">
+
+                    <Grid Visibility="Hidden"  HorizontalAlignment="Left" Height="304" Margin="151,19,0,0" VerticalAlignment="Top" Width="601" Name="Grid_Excel">
 
                         <Button Click="Btn_Load_Excel_Click" Content="载入表格" Opacity="0.8"  HorizontalAlignment="Left" Margin="39,265,0,0" VerticalAlignment="Top" Width="94" Height="29" />
                         <Button Click="Btn_Add_Chart_Click"  Content="添加图表" Opacity="0.8"  HorizontalAlignment="Left" Margin="255,265,0,0" VerticalAlignment="Top" Width="94" Height="29" />
@@ -151,6 +152,10 @@
 
             <TabItem Header="MSG" FontSize="15" Width="60">
                 <Grid Background="Transparent">
+                    <Label Content="收到的消息：" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top"/>
+                    <Controls:DMTextBox Name="Txb_Receiver" IsReadOnly="True" HorizontalAlignment="Left" Height="180" Margin="115,51,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="572"/>
+                    <Controls:DMButton Click="Btn_Open_Sender" Content="打开发送窗口"  Margin="427,248,233,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="136" Height="32"/>
+                    <Controls:DMButton Click="Btn_Clear_Received_Msg" Content="清空"  Margin="608,248,109,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="79" Height="32"/>
 
                 </Grid>
             </TabItem>

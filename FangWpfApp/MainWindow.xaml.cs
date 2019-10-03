@@ -105,6 +105,5 @@ namespace FangWpfApp
             Console.WriteLine();
         }
 
-
     }
 }

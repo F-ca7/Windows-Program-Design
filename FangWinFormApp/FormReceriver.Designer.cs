@@ -38,7 +38,7 @@ namespace FangWinFormApp
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(193, 226);
+            this.button1.Location = new System.Drawing.Point(187, 226);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(167, 37);
             this.button1.TabIndex = 0;
@@ -49,6 +49,7 @@ namespace FangWinFormApp
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.White;
             this.label1.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label1.Location = new System.Drawing.Point(12, 13);
             this.label1.Name = "label1";
@@ -58,6 +59,7 @@ namespace FangWinFormApp
             // 
             // Txb_Receiver
             // 
+            this.Txb_Receiver.BackColor = System.Drawing.Color.White;
             this.Txb_Receiver.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Txb_Receiver.Location = new System.Drawing.Point(16, 46);
             this.Txb_Receiver.Multiline = true;

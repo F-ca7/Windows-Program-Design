@@ -55,6 +55,9 @@ namespace FangWinFormApp
             Txb_Sender.Text = "";
         }
 
+        private void FormSender_Load(object sender, EventArgs e)
+        {
 
+        }
     }
 }

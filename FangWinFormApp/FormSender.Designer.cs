@@ -73,6 +73,7 @@
             this.Name = "FormSender";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormSender";
+            this.Load += new System.EventHandler(this.FormSender_Load);
             this.Shown += new System.EventHandler(this.FormSender_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();

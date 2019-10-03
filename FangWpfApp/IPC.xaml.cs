@@ -185,7 +185,12 @@ namespace FangWpfApp
                     {
                         Console.WriteLine("{0}", ex);
                     }
+                    catch (Exception)
+                    {
+                        return;
+                    }
                 }
+
             });
         }
 
