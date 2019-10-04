@@ -56,13 +56,26 @@
             </TabControl.Resources>
             <TabItem Background="Transparent" Header="DLL" FontSize="15"  BorderThickness="0" Width="60">
                 <Grid  Background="Transparent" Margin="0,0,0,0" >
-                    <Label Content="原数组：" HorizontalAlignment="Left" Height="28" Margin="189,50,0,0" VerticalAlignment="Top" Width="68" FontSize="15"/>
-                    <Controls:DMButton Content="C#冒泡排序" HorizontalAlignment="Center" Margin="0,110,0,0" VerticalAlignment="Top" Width="98" Height="34" Click="Btn_Sort_Click"/>
-                    <Controls:DMButton Content="生成数组" HorizontalAlignment="Left" Margin="588,50,0,0" VerticalAlignment="Top" Width="84" Height="34" Click="Btn_GenerateArr_Click" />
-                    <Controls:DMButton Content="C++归并排序" HorizontalAlignment="Center" Margin="0,169,0,0" VerticalAlignment="Top" Width="98" Height="34" Click="Btn_Sort2_Click"/>
-                    <Label Content="排序后：" HorizontalAlignment="Left" Height="28" Margin="189,242,0,0" VerticalAlignment="Top" Width="68" FontSize="15"/>
-                    <TextBlock HorizontalAlignment="Left" Height="23" Margin="276,55,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="307" x:Name="OriginArrayTxt"/>
-                    <TextBlock HorizontalAlignment="Left" Height="23" Margin="276,247,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="307" x:Name="ResultArrayTxt"/>
+                    <Controls:DMButton Click="Btn_MyDLL_Click" Opacity="0.8" Content="MyDLL" HorizontalAlignment="Left" Height="35" Margin="21,65,0,0" VerticalAlignment="Top" Width="102"/>
+                    <Controls:DMButton Click="Btn_RegDLL_Click" Opacity="0.8"  Content="RegDLL" HorizontalAlignment="Left" Height="35" Margin="21,185,0,0" VerticalAlignment="Top" Width="102"/>
+
+                    <Grid Name="Grid_MyDLL" Visibility="Hidden" HorizontalAlignment="Left" Height="304" Margin="151,19,0,0" VerticalAlignment="Top" Width="601">
+                        <Label Content="原数组：" HorizontalAlignment="Left" Height="28" Margin="57,29,0,0" VerticalAlignment="Top" Width="68" FontSize="15"/>
+                        <Controls:DMButton Content="C#冒泡排序" HorizontalAlignment="Center" Margin="120,89,383,0" VerticalAlignment="Top" Width="98" Height="34" Click="Btn_Sort_Click"/>
+                        <Controls:DMButton Content="C++归并排序" HorizontalAlignment="Center" Margin="120,148,383,0" VerticalAlignment="Top" Width="98" Height="34" Click="Btn_Sort2_Click"/>
+                        <Label Content="排序后：" HorizontalAlignment="Left" Height="28" Margin="57,221,0,0" VerticalAlignment="Top" Width="68" FontSize="15"/>
+                        <TextBlock HorizontalAlignment="Left" Height="23" Margin="137,35,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="307" x:Name="OriginArrayTxt"/>
+                        <TextBlock HorizontalAlignment="Left" Height="23" Margin="276,247,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="307" x:Name="ResultArrayTxt"/>
+                        <Controls:DMButton Content="生成数组" HorizontalAlignment="Left" Margin="470,26,0,0" VerticalAlignment="Top" Width="84" Height="34" Click="Btn_GenerateArr_Click" />
+                    </Grid>
+
+                    <Grid Name="Grid_RegDLL"  HorizontalAlignment="Left" Height="304" Margin="151,19,0,0" VerticalAlignment="Top" Width="601">
+                        <Controls:DMButton Click="Btn_Create_Reg_Click" Opacity="0.8" Content="创建注册表项" FontSize="18" HorizontalAlignment="Left" Height="43" Margin="449,91,0,0" VerticalAlignment="Top" Width="142"/>
+                        <Label Content="写入注册表的值" FontSize="18" HorizontalAlignment="Left" Margin="23,24,0,0" VerticalAlignment="Top"/>
+                        <Controls:DMTextBox Name="Txb_Reg_Value" HorizontalAlignment="Left" Height="27" Margin="177,28,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
+
+
+                    </Grid>
 
                 </Grid>
             </TabItem>
@@ -72,7 +85,7 @@
                     <Controls:DMButton Content="自定义COM" HorizontalAlignment="Left" Height="35" Margin="22,40,0,0" VerticalAlignment="Top" Width="102" Click="Btn_MyCOM_Click"/>
                     <Controls:DMButton Content="Word COM" HorizontalAlignment="Left" Height="35" Margin="22,120,0,0" VerticalAlignment="Top" Width="102" Click="Btn_Show_Word" />
                     <Controls:DMButton Content="Excel COM" HorizontalAlignment="Left" Height="35" Margin="22,200,0,0" VerticalAlignment="Top" Width="102" Click="Btn_Show_Excel" />
-                    <Grid  Name="Grid_MyCOM" Visibility="Hidden" HorizontalAlignment="Left" Height="304" Margin="151,19,0,0" VerticalAlignment="Top" Width="601">
+                    <Grid Name="Grid_MyCOM" Visibility="Hidden" HorizontalAlignment="Left" Height="304" Margin="151,19,0,0" VerticalAlignment="Top" Width="601">
                         <Label Content="输入double类型数组(空格分隔)：" HorizontalAlignment="Left" Margin="10,19,0,0" VerticalAlignment="Top"/>
                         <Controls:DMTextBox Name="Txb_Arr_Input" HorizontalAlignment="Left" Height="23" Margin="82,65,0,0" TextWrapping="Wrap" Text="" Hint="空格分隔" VerticalAlignment="Top" Width="418"/>
                         <Controls:DMButton Click="Btn_Calc_Stats_Click" Content="计算统计量" Opacity="0.8" HorizontalAlignment="Left" Margin="248,104,0,0" VerticalAlignment="Top" Width="100" Height="35"/>

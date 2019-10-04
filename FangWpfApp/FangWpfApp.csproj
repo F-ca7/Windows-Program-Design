@@ -70,6 +70,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="RegConst.cs" />
     <Compile Include="WinAPI.cs" />
     <Page Include="DlgExcelColRange.xaml">
       <SubType>Designer</SubType>

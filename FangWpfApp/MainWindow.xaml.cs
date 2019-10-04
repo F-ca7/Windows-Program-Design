@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DllSharpSort;
 using DMSkin.WPF;
+using Microsoft.Win32;
 
 namespace FangWpfApp
 {
@@ -22,11 +23,40 @@ namespace FangWpfApp
     /// </summary>
     public partial class MainWindow
     {
+        // 数组大小
         const int ARR_SIZE = 6;
         int[] arr;
 
+        const string APP_NAME = "FangWpfApp";
+
         [DllImport((@"../../../Release/DllCppSort.dll"), EntryPoint = "MergeSort")]
         public static extern void MergeSort(int[] arr, int size);
+
+        // dll创建注册表项
+        [DllImport((@"advapi32.dll"))]
+        private static extern int RegCreateKeyEx(
+            uint hKey,          // 一个打开项的句柄，或者一个标准项名
+            string lpSubKey,    // 欲创建的新子项的名字
+            uint Reserved,      
+            string lpClass,     // 项的类名
+            uint dwOptions,     // 系统重新启动后会消失
+            uint samDesired,        // 带有前缀KEY_??的一个或多个常数。组合起来描述了允许对这个项进行哪些操作
+            uint lpSecurityAttributes,  // 对这个项的安全特性进行描述的一个结构
+            ref uint phkResult,     // 指定用于装载新子项句柄的一个变量
+            ref uint lpdwDisposition     // 用于装载下列某个常数的一个变量
+        );
+
+        // 注册表项赋值
+        [DllImport((@"advapi32.dll"))]
+        private static extern int RegSetValueEx(
+          uint hKey,            // 一个打开项的句柄，或者一个标准项名
+          string lpValueName,   //  Pointer to a string containing the name of the value to set. If a value with this name is not already present in the key, this function adds it to the key
+          uint Reserved,
+          uint dwType,          // Type of information to be stored as the value data
+          [MarshalAs(UnmanagedType.LPStr)]      // 指向字符串的指针
+          string lpData,      // Pointer to a buffer that contains the data to be stored with the specified value name
+          uint cbData           // Size, in bytes, of the information pointed to by lpData
+        );
 
         public MainWindow()
         {
@@ -34,6 +64,28 @@ namespace FangWpfApp
             GenerateRandomArray();
         }
 
+
+        // 打开自定义DLL演示面板
+        private void Btn_MyDLL_Click(object sender, RoutedEventArgs e)
+        {
+            HideAllDLLGrids();
+            Grid_MyDLL.Visibility = Visibility.Visible;
+        }
+
+        // 打开注册表DLL演示面板
+        private void Btn_RegDLL_Click(object sender, RoutedEventArgs e)
+        {
+            HideAllDLLGrids();
+            Grid_RegDLL.Visibility = Visibility.Visible;
+        }
+
+        private void HideAllDLLGrids()
+        {
+            Grid_MyDLL.Visibility = Visibility.Hidden;
+            Grid_RegDLL.Visibility = Visibility.Hidden;
+        }
+
+        # region 自定义DLL
         // 生成随机数组
         private void GenerateRandomArray()
         {
@@ -50,7 +102,6 @@ namespace FangWpfApp
         {
             GenerateRandomArray();
         }
-
 
         // 调用C# Dll
         private void Btn_Sort_Click(object sender, RoutedEventArgs e)
@@ -105,5 +156,37 @@ namespace FangWpfApp
             Console.WriteLine();
         }
 
+
+        #endregion
+
+        private void Btn_Create_Reg_Click(object sender, RoutedEventArgs e)
+        {
+            uint result = 0;
+            uint ret = 0;
+            RegCreateKeyEx(RegConst.HKEY_CURRENT_USER, APP_NAME, 
+                0, "REG_SZ", RegConst.REG_OPTION_VOLATILE,
+                RegConst.KEY_ALL_ACCESS, 0, ref result, ref ret);
+            if (result == 0)
+            {
+                MessageBox.Show("创建注册表项失败");
+            }
+            else
+            {
+                MessageBox.Show("创建注册表项成功");
+            }
+            string val = Txb_Reg_Value.Text;
+            byte[] arr = Encoding.UTF8.GetBytes(val);
+            int flag = RegSetValueEx(RegConst.HKEY_CURRENT_USER, APP_NAME,
+                0, (uint)RegistryValueKind.String, val, (uint)(arr.Length) + 1);
+            if (flag != 0)
+            {
+                MessageBox.Show("写入注册表项失败");
+            }
+            else
+            {
+                MessageBox.Show("写入注册表项成功");
+            }
+            Txb_Reg_Value.Text = "";
+        }
     }
 }
