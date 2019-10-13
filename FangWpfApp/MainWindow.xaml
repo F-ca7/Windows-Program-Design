@@ -9,7 +9,7 @@
         xmlns:Controls="clr-namespace:DMSkin.WPF.Controls;assembly=DMSkin.WPF" 
         x:Class="FangWpfApp.MainWindow"
         mc:Ignorable="d"
-        Title="Windows程序设计" Height="420" Width="818"
+        Title="Windows程序设计" Height="433" Width="851"
         MinWidth="380"
         MinHeight="300"
         WindowStartupLocation="CenterScreen"
@@ -69,7 +69,7 @@
                         <Controls:DMButton Content="生成数组" HorizontalAlignment="Left" Margin="470,26,0,0" VerticalAlignment="Top" Width="84" Height="34" Click="Btn_GenerateArr_Click" />
                     </Grid>
 
-                    <Grid Name="Grid_RegDLL"  HorizontalAlignment="Left" Height="304" Margin="151,19,0,0" VerticalAlignment="Top" Width="601">
+                    <Grid Name="Grid_RegDLL" Visibility="Hidden" HorizontalAlignment="Left" Height="304" Margin="151,19,0,0" VerticalAlignment="Top" Width="601">
                         <Controls:DMButton Click="Btn_Create_Reg_Click" Opacity="0.8" Content="创建注册表项" FontSize="18" HorizontalAlignment="Left" Height="43" Margin="449,91,0,0" VerticalAlignment="Top" Width="142"/>
                         <Label Content="写入注册表的值" FontSize="18" HorizontalAlignment="Left" Margin="23,24,0,0" VerticalAlignment="Top"/>
                         <Controls:DMTextBox Name="Txb_Reg_Value" HorizontalAlignment="Left" Height="27" Margin="177,28,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
@@ -151,17 +151,35 @@
 
                     </Grid>
 
-                    <Grid Name="Grid_Sem" Visibility="Hidden"   HorizontalAlignment="Left" Height="261" Margin="184,22,0,0" VerticalAlignment="Top" Width="570">
+                    <Grid Name="Grid_Sem"  HorizontalAlignment="Left" Height="301" Margin="145,22,0,0" VerticalAlignment="Top" Width="630">
                         <Label Content="生产者数：" HorizontalAlignment="Left" Margin="26,10,0,0" VerticalAlignment="Top"/>
-                        <Label Content="消费者数：" HorizontalAlignment="Left" Margin="222,10,0,0" VerticalAlignment="Top"/>
+                        <Label Content="消费者数：" HorizontalAlignment="Left" Margin="186,11,0,0" VerticalAlignment="Top"/>
+                        <Label Content="仓库容量：" HorizontalAlignment="Left" Margin="337,11,0,0" VerticalAlignment="Top"/>
                         <Controls:DMTextBox Name="Txb_Producer_Cnt" HorizontalAlignment="Left" Height="23" Margin="106,13,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="61"/>
-                        <Controls:DMTextBox Name="Txb_Consumer_Cnt" HorizontalAlignment="Left" Height="23" Margin="307,13,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="61"/>
-                        <Controls:DMTextBox Name="Txb_Sem_Result" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="207" Margin="26,54,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="518"/>
-                        <Button Click="Btn_Start_Sem_Click" Content="开始模拟" Opacity="0.8" HorizontalAlignment="Left" Margin="445,11,0,0" VerticalAlignment="Top" Width="99" Height="26"/>
+                        <Controls:DMTextBox Name="Txb_Consumer_Cnt" HorizontalAlignment="Left" Height="23" Margin="271,13,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="61"/>
+                        <Controls:DMTextBox Name="Txb_Buffer" HorizontalAlignment="Left" Height="23" Margin="412,14,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="61"/>
+                        <Controls:DMTextBox Name="Txb_Sem_Result" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="246" Margin="337,45,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="283"/>
+                        <Button Click="Btn_Start_Sem_Click" Content="开始" Opacity="0.8" HorizontalAlignment="Left" Margin="501,14,0,0" VerticalAlignment="Top" Width="59" Height="26"/>
+                        <Grid ShowGridLines="True" Name="Grid_Buffers" HorizontalAlignment="Left" Height="210" Margin="20,50,0,0" VerticalAlignment="Top" Width="300">
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                        <Label Content="已生产数：" HorizontalAlignment="Left" Margin="52,265,0,0" VerticalAlignment="Top"/>
+                        <Label Name="Lbl_Produced_Cnt" Content="0" HorizontalAlignment="Left" Margin="133,265,0,0" VerticalAlignment="Top"/>
 
                     </Grid>
                 </Grid>
             </TabItem>
+
 
             <TabItem Header="MSG" FontSize="15" Width="60">
                 <Grid Background="Transparent">
@@ -169,6 +187,19 @@
                     <Controls:DMTextBox Name="Txb_Receiver" IsReadOnly="True" HorizontalAlignment="Left" Height="180" Margin="115,51,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="572"/>
                     <Controls:DMButton Click="Btn_Open_Sender" Content="打开发送窗口"  Margin="427,248,233,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="136" Height="32"/>
                     <Controls:DMButton Click="Btn_Clear_Received_Msg" Content="清空"  Margin="608,248,109,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="79" Height="32"/>
+
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="EVT" FontSize="15" Width="60">
+                <Grid Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="149*"/>
+                        <ColumnDefinition Width="647*"/>
+                    </Grid.ColumnDefinitions>
+                    <Controls:DMButton Content="触发警报"  HorizontalAlignment="Left" Margin="44,283,0,0" VerticalAlignment="Top" Width="113" Height="33" Grid.Column="1"/>
+                    <Controls:DMTextBox Name="Txb_Evt" HorizontalAlignment="Left" Height="235" Margin="119,29,0,0" TextWrapping="Wrap" Text="DMTextBox" VerticalAlignment="Top" Width="544" Grid.ColumnSpan="2"/>
+                    <Controls:DMButton Content="关闭警报"  HorizontalAlignment="Left" Margin="293,283,0,0" VerticalAlignment="Top" Width="113" Height="33" Grid.Column="1"/>
 
                 </Grid>
             </TabItem>
@@ -200,6 +231,8 @@
 
                 </Grid>
             </TabItem>
+
+
         </TabControl>
         <Controls:DMSystemCloseButton Content="退出" Background="Transparent" BorderThickness="0" HorizontalAlignment="Right" Margin="0,377,0,0" Width="80" Height="40" Cursor="Hand"/>
         <Label Content="Windows程序设计演示" Foreground="White" HorizontalAlignment="Left" Height="26" VerticalAlignment="Top" Width="301" FontSize="16" FontWeight="Bold" />

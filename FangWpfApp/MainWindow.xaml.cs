@@ -35,27 +35,27 @@ namespace FangWpfApp
         // dll创建注册表项
         [DllImport((@"advapi32.dll"))]
         private static extern int RegCreateKeyEx(
-            uint hKey,          // 一个打开项的句柄，或者一个标准项名
-            string lpSubKey,    // 欲创建的新子项的名字
+            uint hKey,          
+            string lpSubKey,    
             uint Reserved,      
-            string lpClass,     // 项的类名
-            uint dwOptions,     // 系统重新启动后会消失
-            uint samDesired,        // 带有前缀KEY_??的一个或多个常数。组合起来描述了允许对这个项进行哪些操作
-            uint lpSecurityAttributes,  // 对这个项的安全特性进行描述的一个结构
-            ref uint phkResult,     // 指定用于装载新子项句柄的一个变量
-            ref uint lpdwDisposition     // 用于装载下列某个常数的一个变量
+            string lpClass,    
+            uint dwOptions,     
+            uint samDesired,       
+            uint lpSecurityAttributes,  
+            ref uint phkResult,    
+            ref uint lpdwDisposition     
         );
 
         // 注册表项赋值
         [DllImport((@"advapi32.dll"))]
         private static extern int RegSetValueEx(
-          uint hKey,            // 一个打开项的句柄，或者一个标准项名
-          string lpValueName,   //  Pointer to a string containing the name of the value to set. If a value with this name is not already present in the key, this function adds it to the key
+          uint hKey,           
+          string lpValueName,   
           uint Reserved,
-          uint dwType,          // Type of information to be stored as the value data
-          [MarshalAs(UnmanagedType.LPStr)]      // 指向字符串的指针
-          string lpData,      // Pointer to a buffer that contains the data to be stored with the specified value name
-          uint cbData           // Size, in bytes, of the information pointed to by lpData
+          uint dwType,         
+          [MarshalAs(UnmanagedType.LPStr)]      
+          string lpData,     
+          uint cbData           
         );
 
         public MainWindow()
@@ -65,14 +65,14 @@ namespace FangWpfApp
         }
 
 
-        // 打开自定义DLL演示面板
+
         private void Btn_MyDLL_Click(object sender, RoutedEventArgs e)
         {
             HideAllDLLGrids();
             Grid_MyDLL.Visibility = Visibility.Visible;
         }
 
-        // 打开注册表DLL演示面板
+
         private void Btn_RegDLL_Click(object sender, RoutedEventArgs e)
         {
             HideAllDLLGrids();
@@ -159,6 +159,8 @@ namespace FangWpfApp
 
         #endregion
 
+
+        # region DLL操作注册表
         private void Btn_Create_Reg_Click(object sender, RoutedEventArgs e)
         {
             uint result = 0;
@@ -188,5 +190,6 @@ namespace FangWpfApp
             }
             Txb_Reg_Value.Text = "";
         }
+        # endregion
     }
 }

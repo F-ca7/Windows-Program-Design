@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace FangWpfApp
 {
@@ -22,15 +24,33 @@ namespace FangWpfApp
         NamedPipeServerStream pipeServer = null;
         StreamWriter sw = null;
         StreamReader sr = null;
+
+
         // 缓冲区大小
-        const int BUFF_SIZE = 6;
+        const int MAX_BUFF_SIZE = 12;
+        int BUFF_SIZE = MAX_BUFF_SIZE;
+        const int COLS = 4;
+        const int ROWS = 3;
+        int inIdx = 0;
+        int outIdx = 0;
+        Label[] lblBuffers;
+        SolidColorBrush emptyBg = new SolidColorBrush((Color)ColorConverter.ConvertFromString("White"));
+        SolidColorBrush fullBg = new SolidColorBrush((Color)ColorConverter.ConvertFromString("Green"));
+        // 初始标签
+        const string INIT_CONTENT = "空";
+        const string FULL_CONTENT = "有";
         // 总生产数量
         const int TOTAL_PRODUCT = 20;
         // 信号量
         Semaphore empty;
         Semaphore full;
-        Mutex mutex = new Mutex();
-        // 已经生产的数量
+        // 访问生产总量的互斥锁
+        Mutex totalCntMutex = new Mutex();
+        // 访问放入取出的互斥锁
+        Mutex inSlotMutex = new Mutex();
+        Mutex outSlotMutex = new Mutex();
+        // 已经预定生产的数量
+        int producingCnt = 0;    
         int producedCnt = 0;    
 
         // 隐藏所有面板
@@ -64,10 +84,18 @@ namespace FangWpfApp
         // 开始模拟生产者消费者同步
         private void Btn_Start_Sem_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                CreateBufferGrid();
+            }catch(Exception)
+            {
+                MessageBox.Show("缓冲区个数应小于12且为正整数！");
+                return;
+            }
             int producerCnt, consumerCnt;
             try
             {
-                Txb_Sem_Result.AppendText(string.Format("缓冲区大小为{0}, 总生产个数为{1}\n", BUFF_SIZE, TOTAL_PRODUCT));
+                Txb_Sem_Result.AppendText(string.Format("缓冲区大小为{0}, 生产目标个数为{1}\n", BUFF_SIZE, TOTAL_PRODUCT));
                 producerCnt = int.Parse(Txb_Producer_Cnt.Text);
                 consumerCnt = int.Parse(Txb_Consumer_Cnt.Text);
                 empty = new Semaphore(BUFF_SIZE, BUFF_SIZE);
@@ -75,14 +103,18 @@ namespace FangWpfApp
                 
                 for(int i = 0; i < producerCnt; i++)
                 {
-                    Thread thread = new Thread(new ParameterizedThreadStart(Produce));
-                    thread.Name = "生产者" + i;
+                    Thread thread = new Thread(new ParameterizedThreadStart(Produce))
+                    {
+                        Name = "生产者" + i
+                    };
                     thread.Start(thread.Name);
                 }
                 for (int i = 0; i < consumerCnt; i++)
                 {
-                    Thread thread = new Thread(new ParameterizedThreadStart(Consume));
-                    thread.Name = "消费者" + i;
+                    Thread thread = new Thread(new ParameterizedThreadStart(Consume))
+                    {
+                        Name = "消费者" + i
+                    };
                     thread.Start(thread.Name);
                 }
 
@@ -90,27 +122,72 @@ namespace FangWpfApp
             catch (FormatException)
             {
                 MessageBox.Show("请输入正整数！");
+            }            
+        }
+
+        // 动态创建缓冲区格子
+        private void CreateBufferGrid()
+        {
+            try
+            {
+                BUFF_SIZE = int.Parse(Txb_Buffer.Text);
+            }
+            catch (Exception e)
+            {
+                // 异常由外层处理
+                throw e;
+            }
+            if(BUFF_SIZE> MAX_BUFF_SIZE)
+            {
+                throw new ArgumentException("缓冲数超过最大值");
+            }
+            lblBuffers = new Label[BUFF_SIZE];
+            // 单个格子的大小
+            double width = Grid_Buffers.Width / COLS;
+            double height = Grid_Buffers.Height / ROWS;
+            int row, col;
+            for (int i = 0; i < BUFF_SIZE; i++)
+            {
+                row = i / COLS;
+                col = i % COLS;
+                Label l = new Label
+                {
+                    Content = INIT_CONTENT,
+                    Width = width,
+                    Height = height,
+                    Background = emptyBg
+                };
+                Grid_Buffers.Children.Add(l);
+                Grid.SetRow(l, row);
+                Grid.SetColumn(l, col);
+                lblBuffers[i] = l;
             }
         }
+
         // 生产者生产
         private void Produce(object obj)
         {
             while (true)
             {
-                mutex.WaitOne();
-                if (producedCnt >= TOTAL_PRODUCT)
+                totalCntMutex.WaitOne();
+                if (producingCnt >= TOTAL_PRODUCT)
                 {
-                    AppendSemResult(string.Format("---------------\n达到生产目标{0}。{1}结束\n", TOTAL_PRODUCT, obj.ToString()));
-                    mutex.ReleaseMutex();
+                    AppendCommonSemResult(string.Format("---------------\n达到预定生产目标{0}。{1}结束\n", TOTAL_PRODUCT, obj.ToString()));
+                    totalCntMutex.ReleaseMutex();
                     return;
                 }
                 // 未生产完，继续
-                AppendSemResult(string.Format("---------------\n目前已经生产{0}个产品\n", producedCnt));
-                producedCnt++;
-                mutex.ReleaseMutex();
+                //AppendSemResult(string.Format("---------------\n目前已经生产{0}个产品\n", producedCnt));              
+                producingCnt++;
+                totalCntMutex.ReleaseMutex();
                 empty.WaitOne();
-                Thread.Sleep(1000);
-                AppendSemResult(string.Format("---------------\n{0}生产完成\n", obj.ToString()));
+                // 模拟生产延时
+                Thread.Sleep(2000);
+                // 放入缓冲区时才获取锁
+                inSlotMutex.WaitOne();
+                AppendProSemResult(string.Format("---------------\n{0}生产完成\n", obj.ToString()));
+                inSlotMutex.ReleaseMutex();
+                // 通知生产好了
                 full.Release();
             }
         }
@@ -119,32 +196,71 @@ namespace FangWpfApp
         {
             while (true)
             {
-                mutex.WaitOne();
+                totalCntMutex.WaitOne();
                 if (producedCnt >= TOTAL_PRODUCT)
                 {
-                    AppendSemResult(string.Format("---------------\n达到生产目标{0}。{1}结束\n", TOTAL_PRODUCT, obj.ToString()));
-                    mutex.ReleaseMutex();
+                    AppendCommonSemResult(string.Format("---------------\n达到预定生产目标{0}。{1}结束\n", TOTAL_PRODUCT, obj.ToString()));
+                    totalCntMutex.ReleaseMutex();
                     return;
                 }
-                mutex.ReleaseMutex();
+                totalCntMutex.ReleaseMutex();
                 full.WaitOne();
+                outSlotMutex.WaitOne();
+                AppendConSemResult(string.Format("---------------\n{0}开始消费\n", obj.ToString()));
+                // 这里先取再耗时消费
+                outSlotMutex.ReleaseMutex();
+                // 模拟消费延时
                 Thread.Sleep(1000);
-                AppendSemResult(string.Format("---------------\n{0}消费完成\n", obj.ToString()));
+                AppendCommonSemResult(string.Format("---------------\n{0}消费完成\n", obj.ToString()));
+                // 通知有空位
                 empty.Release();
             }
 
         }
 
-        // 异步更新结果
-        private void AppendSemResult(string data)
+        // 异步更新生产者结果
+        private void AppendProSemResult(string data)
+        {
+            Txb_Sem_Result.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                producedCnt++;
+                lblBuffers[inIdx % BUFF_SIZE].Background = fullBg;
+                lblBuffers[inIdx % BUFF_SIZE].Content = FULL_CONTENT;
+                inIdx++;
+                Txb_Sem_Result.AppendText(data + "\n");
+                Txb_Sem_Result.ScrollToEnd();
+                Lbl_Produced_Cnt.Content = "" + producedCnt;
+                
+            }));         
+        }
+        
+        
+        // 异步更新消费者结果
+        private void AppendConSemResult(string data)
+        {
+            Txb_Sem_Result.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                lblBuffers[outIdx % BUFF_SIZE].Background = emptyBg;
+                lblBuffers[outIdx % BUFF_SIZE].Content = INIT_CONTENT;
+                outIdx++;
+                Txb_Sem_Result.AppendText(data + "\n");
+                Txb_Sem_Result.ScrollToEnd();
+                Lbl_Produced_Cnt.Content = "" + producedCnt;               
+            }));         
+        }
+
+
+
+        // 异步更新通用结果
+        private void AppendCommonSemResult(string data)
         {
             Txb_Sem_Result.Dispatcher.BeginInvoke(new Action(() =>
             {
                 Txb_Sem_Result.AppendText(data + "\n");
                 Txb_Sem_Result.ScrollToEnd();
-            }));         
+                Lbl_Produced_Cnt.Content = "" + producedCnt;
+            }));
         }
-
         #endregion
 
         #region 命名管道
