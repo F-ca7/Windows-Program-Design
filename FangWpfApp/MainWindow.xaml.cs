@@ -190,6 +190,11 @@ namespace FangWpfApp
             }
             Txb_Reg_Value.Text = "";
         }
-        # endregion
+
+
+
+        #endregion
+
+
     }
 }

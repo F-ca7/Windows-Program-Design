@@ -151,7 +151,7 @@
 
                     </Grid>
 
-                    <Grid Name="Grid_Sem"  HorizontalAlignment="Left" Height="301" Margin="145,22,0,0" VerticalAlignment="Top" Width="630">
+                    <Grid Name="Grid_Sem" Visibility="Hidden" HorizontalAlignment="Left" Height="301" Margin="145,22,0,0" VerticalAlignment="Top" Width="630">
                         <Label Content="生产者数：" HorizontalAlignment="Left" Margin="26,10,0,0" VerticalAlignment="Top"/>
                         <Label Content="消费者数：" HorizontalAlignment="Left" Margin="186,11,0,0" VerticalAlignment="Top"/>
                         <Label Content="仓库容量：" HorizontalAlignment="Left" Margin="337,11,0,0" VerticalAlignment="Top"/>
@@ -208,13 +208,13 @@
                 <Grid Background="Transparent" Margin="0,0,-9,0">
                     <Controls:DMButton  Content="Excel" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" Width="100"  Height="45"/>
                     <Controls:DMButton  Click="Btn_Mysql_Click" Content="Mysql" HorizontalAlignment="Left" Margin="10,196,0,0" VerticalAlignment="Top" Width="100"  Height="45"/>
-                    <Grid Name="Grid_Mysql" HorizontalAlignment="Left" Height="315" Margin="127,10,0,0" VerticalAlignment="Top" Width="678" >
+                    <Grid Name="Grid_Mysql" Visibility="Hidden" HorizontalAlignment="Left" Height="315" Margin="127,10,0,0" VerticalAlignment="Top" Width="678" >
                         <Label Content="用户名：" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
                         <Controls:DMTextBox Name="Txb_Username" HorizontalAlignment="Left" Height="26" Margin="75,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="109" TabIndex="1"/>
                         <Label Content="密码：" HorizontalAlignment="Left" Margin="199,10,0,0" VerticalAlignment="Top"/>
                         <Controls:DMButton Click="Btn_Connect_Mysql_Click" Content="连接" Opacity="0.8" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="591,10,-1,0" Height="26"/>
                         <PasswordBox Name="Txb_Pwd" HorizontalAlignment="Left" Margin="243,10,0,0" VerticalAlignment="Top" Width="120" Height="26" TabIndex="2"/>
-                        <DataGrid Name="Dg_table" HorizontalAlignment="Left" Height="261" Margin="125,44,0,0" VerticalAlignment="Top" Width="465"/>
+                        <DataGrid Name="Dg_table" HorizontalAlignment="Left" CanUserDeleteRows="True" Height="261" Margin="125,44,0,0" VerticalAlignment="Top" Width="465" />
                         <ListView MouseDoubleClick="Lv_Table_Name_MouseDoubleClick" Name="Lv_Table_Name" HorizontalAlignment="Left" Height="261" Margin="2,44,0,0" VerticalAlignment="Top" Width="123">
                             <ListView.View>
                                 <GridView>
@@ -226,7 +226,7 @@
                         <Controls:DMTextBox x:Name="Txb_DBName" HorizontalAlignment="Left" Margin="455,10,0,0" VerticalAlignment="Top" Width="120" Height="26" TabIndex="3"/>
                         <Controls:DMButton Click="Btn_Prev_Page_Click" Opacity="0.8" Content="《" HorizontalAlignment="Left" Margin="599,280,0,0" VerticalAlignment="Top" Width="25" />
                         <Controls:DMButton Click="Btn_Next_Page_Click" Opacity="0.8" Content="》" HorizontalAlignment="Left" Margin="633,280,0,0" VerticalAlignment="Top" Width="25" />
-                        <Controls:DMButton Opacity="0.8" Content="新建" HorizontalAlignment="Left" Margin="595,81,0,0" VerticalAlignment="Top" Width="73" Height="31"/>
+                        <Controls:DMButton Opacity="0.8" Content="确认" Click="Dg_table_Save" HorizontalAlignment="Left" Margin="595,81,0,0" VerticalAlignment="Top" Width="73" Height="31"/>
                     </Grid>
 
                 </Grid>
