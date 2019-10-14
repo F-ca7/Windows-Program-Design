@@ -31,6 +31,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.Txb_Sender = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -62,19 +63,29 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Btn_Send_Msg_Click);
             // 
+            // button2
+            // 
+            this.button2.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button2.Location = new System.Drawing.Point(15, 76);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(152, 32);
+            this.button2.TabIndex = 3;
+            this.button2.Text = "清空父窗口消息";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.Btn_Clear_Receiver);
+            // 
             // FormSender
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(433, 111);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.Txb_Sender);
             this.Controls.Add(this.label1);
             this.Name = "FormSender";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormSender";
-            this.Load += new System.EventHandler(this.FormSender_Load);
-            this.Shown += new System.EventHandler(this.FormSender_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -85,5 +96,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox Txb_Sender;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }

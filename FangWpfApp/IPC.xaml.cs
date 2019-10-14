@@ -290,7 +290,7 @@ namespace FangWpfApp
                     try
                     {
                         string line = sr.ReadLine();
-                        // 异步更新节目
+                        // 异步更新UI
                         Txb_Server.Dispatcher.BeginInvoke(new Action(() =>
                         {
                             Txb_Server.AppendText(DateTime.Now.ToUniversalTime().ToString() + "\n");

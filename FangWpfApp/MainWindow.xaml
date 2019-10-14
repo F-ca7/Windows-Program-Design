@@ -19,7 +19,7 @@
         SystemButtonColor="{StaticResource TransparentColor}"
         SystemButtonForeground="#666666"
         SystemButtonOverColor="#10000000"
-        SystemButtonSize="50">
+        SystemButtonSize="50" Loaded="DMSkinWindow_Loaded">
 
     <Grid>
         <Grid.Background>
@@ -193,13 +193,10 @@
 
             <TabItem Header="EVT" FontSize="15" Width="60">
                 <Grid Background="Transparent">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="149*"/>
-                        <ColumnDefinition Width="647*"/>
-                    </Grid.ColumnDefinitions>
-                    <Controls:DMButton Content="触发警报"  HorizontalAlignment="Left" Margin="44,283,0,0" VerticalAlignment="Top" Width="113" Height="33" Grid.Column="1"/>
-                    <Controls:DMTextBox Name="Txb_Evt" HorizontalAlignment="Left" Height="235" Margin="119,29,0,0" TextWrapping="Wrap" Text="DMTextBox" VerticalAlignment="Top" Width="544" Grid.ColumnSpan="2"/>
-                    <Controls:DMButton Content="关闭警报"  HorizontalAlignment="Left" Margin="293,283,0,0" VerticalAlignment="Top" Width="113" Height="33" Grid.Column="1"/>
+
+                    <Controls:DMButton Name="Btn_Trigger_Alert" Content="触发警报" Click="Btn_Trigger_Alarm_Click" HorizontalAlignment="Left" Margin="188,283,0,0" VerticalAlignment="Top" Width="113" Height="33"/>
+                    <Controls:DMTextBox Name="Txb_Evt" IsReadOnly="True" HorizontalAlignment="Left" Height="235" Margin="119,29,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="544" Grid.ColumnSpan="2"/>
+                    <Controls:DMButton Name="Btn_Stop_Alert" IsEnabled="False" Content="关闭警报" Click="Btn_Stop_Alarm_Click"  HorizontalAlignment="Left" Margin="514,283,0,0" VerticalAlignment="Top" Width="113" Height="33"/>
 
                 </Grid>
             </TabItem>

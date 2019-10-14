@@ -14,28 +14,37 @@ namespace FangWinFormApp
 {
     public partial class FormReceriver : Form
     {
-        // 用户文本消息
-        public const int USER_TEXT_MSG = 0x0400;
 
         public FormReceriver()
         {
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+
+
+        // 打开发送子窗口
+        private void Btn_Open_Sender(object sender, EventArgs e)
         {
             FormSender formSender = new FormSender();
+            formSender.ClearTextEvent += ClearTxb;
             formSender.hwndTest = this.Handle;
             formSender.Show();
         }
 
+        // 清空文本框
+        private void ClearTxb()
+        {
+            Txb_Receiver.Text = "";
+        }
 
 
+        // 重载消息处理
         protected override void WndProc(ref Message m)
         {
             switch (m.Msg)
             {
                 case USER_TEXT_MSG:
+                    // 用户文本消息
                     COPYDATASTRUCT mystr = new COPYDATASTRUCT();
                     Type mytype = mystr.GetType();
                     mystr = (COPYDATASTRUCT)m.GetLParam(mytype);
@@ -50,5 +59,9 @@ namespace FangWinFormApp
             }
         }
 
+        private void FormReceriver_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

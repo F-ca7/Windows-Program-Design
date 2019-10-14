@@ -9,6 +9,10 @@ namespace FangWinFormApp
 {
     public class WinAPI
     {
+        // 用户文本消息
+        public const int USER_TEXT_MSG = 0x0400;
+
+
         /// <summary>
         /// 使用COPYDATASTRUCT来传递字符串
         /// </summary>

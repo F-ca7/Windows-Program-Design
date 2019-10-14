@@ -17,9 +17,10 @@ namespace FangWinFormApp
         public IntPtr hwndTest;
         public int IwndTest;
         public IntPtr hwndfrmTest;
-        // 用户文本消息
-        public const int USER_TEXT_MSG = 0x0400;
 
+        public delegate void ClearTextHandler();
+        // 定义清空文本框事件
+        public event ClearTextHandler ClearTextEvent;
 
         [DllImport("user32.dll")]
         public static extern void SendMessage(
@@ -34,10 +35,6 @@ namespace FangWinFormApp
             InitializeComponent();
         }
 
-        private void FormSender_Shown(object sender, EventArgs e)
-        {
-
-        }
 
         // 发送消息
         private void Btn_Send_Msg_Click(object sender, EventArgs e)
@@ -55,9 +52,14 @@ namespace FangWinFormApp
             Txb_Sender.Text = "";
         }
 
-        private void FormSender_Load(object sender, EventArgs e)
-        {
 
+        // 清空接受者文本框
+        private void Btn_Clear_Receiver(object sender, EventArgs e)
+        {
+            ClearTextEvent();
         }
+
+
+
     }
 }

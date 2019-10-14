@@ -44,7 +44,7 @@ namespace FangWinFormApp
             this.button1.TabIndex = 0;
             this.button1.Text = "打开发送消息窗口";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.Btn_Open_Sender);
             // 
             // label1
             // 
@@ -79,6 +79,7 @@ namespace FangWinFormApp
             this.Name = "FormReceriver";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Receiver";
+            this.Load += new System.EventHandler(this.FormReceriver_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
