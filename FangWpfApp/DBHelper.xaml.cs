@@ -149,7 +149,7 @@ namespace FangWpfApp
         // 加载对应数据表
         private void LoadTable(string tableName)
         {
-            string sql = string.Format("select * from {0} limit {1}, {2}", 
+            string sql = string.Format("select * from `{0}` limit {1}, {2}", 
                 tableName, curPage * PAGE_SIZE, PAGE_SIZE);
 
             MySqlCommand cmd = conn.CreateCommand();

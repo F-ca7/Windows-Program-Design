@@ -81,6 +81,15 @@ namespace FangWpfApp
             Grid_Sem.Visibility = Visibility.Visible;
         }
 
+        // 初始化生产参数
+        private void InitProductParams()
+        {
+            producingCnt = 0;
+            producedCnt = 0;      
+            inIdx = 0;
+            outIdx = 0;
+        }
+
         // 开始模拟生产者消费者同步
         private void Btn_Start_Sem_Click(object sender, RoutedEventArgs e)
         {
@@ -177,16 +186,15 @@ namespace FangWpfApp
                     return;
                 }
                 // 未生产完，继续
-                //AppendSemResult(string.Format("---------------\n目前已经生产{0}个产品\n", producedCnt));              
                 producingCnt++;
                 totalCntMutex.ReleaseMutex();
                 empty.WaitOne();
-                // 模拟生产延时
-                Thread.Sleep(2000);
                 // 放入缓冲区时才获取锁
                 inSlotMutex.WaitOne();
                 AppendProSemResult(string.Format("---------------\n{0}生产完成\n", obj.ToString()));
                 inSlotMutex.ReleaseMutex();
+                // 模拟生产延时
+                Thread.Sleep(1000);
                 // 通知生产好了
                 full.Release();
             }
@@ -210,7 +218,7 @@ namespace FangWpfApp
                 // 这里先取再耗时消费
                 outSlotMutex.ReleaseMutex();
                 // 模拟消费延时
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
                 AppendCommonSemResult(string.Format("---------------\n{0}消费完成\n", obj.ToString()));
                 // 通知有空位
                 empty.Release();
@@ -261,6 +269,29 @@ namespace FangWpfApp
                 Lbl_Produced_Cnt.Content = "" + producedCnt;
             }));
         }
+
+        // 清空信号量界面
+        private void Btn_Clear_Sem_Click(object sender, RoutedEventArgs e)
+        {
+            Txb_Producer_Cnt.Text = "";
+            Txb_Consumer_Cnt.Text = "";
+            Txb_Buffer.Text = "";
+            Txb_Sem_Result.Text = "";           
+            RemoveBufferGrids();
+            lblBuffers = null;
+            InitProductParams();
+        }
+
+        // 删除仓库格子
+        private void RemoveBufferGrids()
+        {
+            for (int i = 0; i < lblBuffers.Length; i++)
+            {
+                Grid_Buffers.Children.Remove(lblBuffers[i]);
+            }
+        }
+
+
         #endregion
 
         #region 命名管道
@@ -282,7 +313,7 @@ namespace FangWpfApp
         // Server开启线程等待接收消息
         private void WaitForMessage()
         {
-            ThreadPool.QueueUserWorkItem(delegate
+            Thread thread = new Thread(() =>
             {
                 pipeServer.WaitForConnection();
                 while (true)
@@ -306,8 +337,9 @@ namespace FangWpfApp
                         return;
                     }
                 }
-
             });
+            thread.IsBackground = true;
+            thread.Start();           
         }
 
         // 连接管道

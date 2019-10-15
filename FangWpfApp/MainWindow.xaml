@@ -64,8 +64,8 @@
                         <Controls:DMButton Content="C#冒泡排序" HorizontalAlignment="Center" Margin="120,89,383,0" VerticalAlignment="Top" Width="98" Height="34" Click="Btn_Sort_Click"/>
                         <Controls:DMButton Content="C++归并排序" HorizontalAlignment="Center" Margin="120,148,383,0" VerticalAlignment="Top" Width="98" Height="34" Click="Btn_Sort2_Click"/>
                         <Label Content="排序后：" HorizontalAlignment="Left" Height="28" Margin="57,221,0,0" VerticalAlignment="Top" Width="68" FontSize="15"/>
-                        <TextBlock HorizontalAlignment="Left" Height="23" Margin="137,35,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="307" x:Name="OriginArrayTxt"/>
-                        <TextBlock HorizontalAlignment="Left" Height="23" Margin="276,247,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="307" x:Name="ResultArrayTxt"/>
+                        <TextBlock HorizontalAlignment="Left" Height="23" Margin="137,29,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="307" x:Name="OriginArrayTxt"/>
+                        <TextBlock HorizontalAlignment="Left" Height="23" Margin="137,221,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="307" x:Name="ResultArrayTxt"/>
                         <Controls:DMButton Content="生成数组" HorizontalAlignment="Left" Margin="470,26,0,0" VerticalAlignment="Top" Width="84" Height="34" Click="Btn_GenerateArr_Click" />
                     </Grid>
 
@@ -153,13 +153,13 @@
 
                     <Grid Name="Grid_Sem" Visibility="Hidden" HorizontalAlignment="Left" Height="301" Margin="145,22,0,0" VerticalAlignment="Top" Width="630">
                         <Label Content="生产者数：" HorizontalAlignment="Left" Margin="26,10,0,0" VerticalAlignment="Top"/>
-                        <Label Content="消费者数：" HorizontalAlignment="Left" Margin="186,11,0,0" VerticalAlignment="Top"/>
-                        <Label Content="仓库容量：" HorizontalAlignment="Left" Margin="337,11,0,0" VerticalAlignment="Top"/>
-                        <Controls:DMTextBox Name="Txb_Producer_Cnt" HorizontalAlignment="Left" Height="23" Margin="106,13,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="61"/>
-                        <Controls:DMTextBox Name="Txb_Consumer_Cnt" HorizontalAlignment="Left" Height="23" Margin="271,13,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="61"/>
-                        <Controls:DMTextBox Name="Txb_Buffer" HorizontalAlignment="Left" Height="23" Margin="412,14,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="61"/>
+                        <Label Content="消费者数：" HorizontalAlignment="Left" Margin="186,10,0,0" VerticalAlignment="Top"/>
+                        <Label Content="仓库容量：" HorizontalAlignment="Left" Margin="337,10,0,0" VerticalAlignment="Top"/>
+                        <Controls:DMTextBox Name="Txb_Producer_Cnt" HorizontalAlignment="Left" Height="23" Margin="106,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="61"/>
+                        <Controls:DMTextBox Name="Txb_Consumer_Cnt" HorizontalAlignment="Left" Height="23" Margin="271,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="61"/>
+                        <Controls:DMTextBox Name="Txb_Buffer" HorizontalAlignment="Left" Height="23" Margin="412,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="61"/>
                         <Controls:DMTextBox Name="Txb_Sem_Result" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="246" Margin="337,45,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="283"/>
-                        <Button Click="Btn_Start_Sem_Click" Content="开始" Opacity="0.8" HorizontalAlignment="Left" Margin="501,14,0,0" VerticalAlignment="Top" Width="59" Height="26"/>
+                        <Button Click="Btn_Start_Sem_Click" Content="开始" Opacity="0.8" HorizontalAlignment="Left" Margin="493,10,0,0" VerticalAlignment="Top" Width="59" Height="26"/>
                         <Grid ShowGridLines="True" Name="Grid_Buffers" HorizontalAlignment="Left" Height="210" Margin="20,50,0,0" VerticalAlignment="Top" Width="300">
                             <Grid.RowDefinitions>
                                 <RowDefinition></RowDefinition>
@@ -175,6 +175,7 @@
                         </Grid>
                         <Label Content="已生产数：" HorizontalAlignment="Left" Margin="52,265,0,0" VerticalAlignment="Top"/>
                         <Label Name="Lbl_Produced_Cnt" Content="0" HorizontalAlignment="Left" Margin="133,265,0,0" VerticalAlignment="Top"/>
+                        <Button Click="Btn_Clear_Sem_Click" Content="清空" Opacity="0.8" HorizontalAlignment="Left" Margin="565,10,0,0" VerticalAlignment="Top" Width="59" Height="26"/>
 
                     </Grid>
                 </Grid>

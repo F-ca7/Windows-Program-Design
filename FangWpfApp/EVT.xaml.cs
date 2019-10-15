@@ -95,6 +95,7 @@ namespace FangWpfApp
         private void AppendEvtTime()
         {
             Txb_Evt.AppendText(DateTime.Now.ToUniversalTime().ToString() + "\n");
+            Txb_Evt.ScrollToEnd();
         }
 
 
