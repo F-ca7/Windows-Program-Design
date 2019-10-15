@@ -130,8 +130,6 @@ namespace FangWpfApp
                 curSelection.TypeParagraph();
             }
 
-
-
             # region 设置格式
             // 标题格式
             curRange = doc.Sections[curSectionNum].Range.Paragraphs[1].Range;
@@ -161,7 +159,6 @@ namespace FangWpfApp
             }
             # endregion 设置格式
 
-            //doc.Fields[1].Update();
             // 保存文档
             object saveName = fileName;
             doc.SaveAs2(ref saveName);
@@ -180,8 +177,10 @@ namespace FangWpfApp
     {
         MsExcel.Application app;
         MsExcel.Workbook wb;
-
+        // excel路径
         string excelPath;
+        // excel数据表
+        System.Data.DataTable excelDt;
 
         // 参考文献列表
         private ObservableCollection<Reference> referenceList = new ObservableCollection<Reference>();
@@ -289,20 +288,20 @@ namespace FangWpfApp
             var refList = new List<Reference>(referenceList.ToList());
 
             WordArticle article = new WordArticle(title, content, header, refList);
-            clearWordInputs();
+            ClearWordInputs();
             // 等待保存word文件
-            await saveWordFile(article, filePath);
+            await SaveWordFile(article, filePath);
 
             MessageBoxResult msgResult = MessageBox.Show("生成完毕。\n是否打开查看？", "提示",
                 MessageBoxButton.OKCancel, MessageBoxImage.Question);
             if (msgResult == MessageBoxResult.OK)
             {
-                openDocFile(filePath);
+                OpenDocFile(filePath);
             }         
         }
 
         // 异步生成文档并保存
-        private async System.Threading.Tasks.Task saveWordFile(WordArticle article, string path)
+        private async System.Threading.Tasks.Task SaveWordFile(WordArticle article, string path)
         {
             await System.Threading.Tasks.Task.Run(() =>
             {
@@ -311,7 +310,7 @@ namespace FangWpfApp
         }
 
         // 打开doc文件
-        private void openDocFile(string filePath)
+        private void OpenDocFile(string filePath)
         {
             var wordApp = new MsWord.Application();
             Object filename = filePath;
@@ -358,7 +357,7 @@ namespace FangWpfApp
         }
 
         // 清空所有输入框的内容
-        private void clearWordInputs()
+        private void ClearWordInputs()
         {
             Txb_Reference.Text = "";
             Txb_Title.Text = "";
@@ -415,7 +414,7 @@ namespace FangWpfApp
         // 在datagrid显示表格
         private void ShowExcelInDatagrid(string filepath)
         {
-            System.Data.DataTable dt = new System.Data.DataTable();
+            excelDt = new System.Data.DataTable();
             try
             {
                 object oMissing = System.Reflection.Missing.Value;
@@ -428,7 +427,7 @@ namespace FangWpfApp
                 int columns = ws.UsedRange.Columns.Count;
                 for (int i = 1; i <= rows; i++)
                 {
-                    System.Data.DataRow dr = dt.NewRow();
+                    System.Data.DataRow dr = excelDt.NewRow();
                     for (int j = 1; j <= columns; j++)
                     {
                         MsExcel.Range range = ws.Range[app.Cells[i, j], app.Cells[i, j]];
@@ -438,21 +437,20 @@ namespace FangWpfApp
                         {
                             string colName = app.ActiveCell.Text.ToString();
                             //是否存在重复列名
-                            if (dt.Columns.Contains(colName))                    
+                            if (excelDt.Columns.Contains(colName))                    
                             {
-                                dt.Columns.Add(colName + j);
+                                excelDt.Columns.Add(colName + j);
                             }
-                            else { dt.Columns.Add(colName); }
+                            else { excelDt.Columns.Add(colName); }
                         }
                         dr[j - 1] = app.ActiveCell.Text.ToString();
                     }
                     if (i != 1)
                     {
-                        dt.Rows.Add(dr);
+                        excelDt.Rows.Add(dr);
                     }
-
                 }
-                Dg_Excel.Dispatcher.BeginInvoke(new System.Action(() => Dg_Excel.ItemsSource = dt.DefaultView));
+                Dg_Excel.Dispatcher.BeginInvoke(new System.Action(() => Dg_Excel.ItemsSource = excelDt.DefaultView));
                 ws = null;
             }
             catch (Exception e)
@@ -472,10 +470,6 @@ namespace FangWpfApp
             DlgExcelColRange dlgExcelColRange = new DlgExcelColRange();
             dlgExcelColRange.sendMessage += AddChartHandler;
             dlgExcelColRange.ShowDialog();
-            //if(dlgExcelColRange.DialogResult == false)
-            //{
-            //    return;
-            //}
         }
 
         // Excel列范围输入窗口的回调
@@ -490,7 +484,6 @@ namespace FangWpfApp
                 MessageBox.Show("输入列不合法");
                 return;
             }
-
             MessageBox.Show("添加图表成功");
         }
 
@@ -530,9 +523,29 @@ namespace FangWpfApp
                 MessageBox.Show("请先载入表格");
                 return;
             }
+            int rowCount = excelDt.Rows.Count;
+            int colCount = excelDt.Columns.Count;
+            int colIndex = 0;
+            Worksheet ws = (Worksheet)app.Worksheets.get_Item(1);
+            app.DisplayAlerts = false;
+            ws.Cells.Clear();
+            foreach (System.Data.DataColumn col in excelDt.Columns)
+            {
+                colIndex++;
+                ws.Cells[1, colIndex] = col.ColumnName;
+            }
+
+            for (int i = 0; i < rowCount; i++)
+            {
+                for (int j = 0; j < colCount; j++)
+                {
+                    ws.Cells[i+2, j+1] = excelDt.Rows[i][j];
+                }
+
+            }
             SetExcelBorders(3);
             int suffix = excelPath.LastIndexOf(".xlsx");
-            // Console.WriteLine("name={0}, index={1}", excelPath, suffix);
+            // 新文件名
             object filename = excelPath.Substring(0, suffix) + "_new.xlsx";
             wb.SaveAs(filename);
             wb.Close(false, Missing.Value, Missing.Value);
